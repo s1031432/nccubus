@@ -127,7 +127,7 @@ function getData(mode){
             }
         }
         result.push(`--`);
-        result.push(`資料最後更新時間：\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}</pre>`);
+        result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}</pre>`);
         console.log(`${mode} data update`)
         if(mode == "zoo_nccu1"){
             zoo_nccu1_data = result.join("\n");
