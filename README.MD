@@ -37,7 +37,7 @@
 
 ### Run Telegram bot on local server or you can deploy to the Cloud
 ```sh
-    node bus.js
+    npm start
 ```
 ### Demo on Telegram screenshot
 <img src="https://i.imgur.com/HIdROMM.jpg" alt="demo" style="width:360px;"/>

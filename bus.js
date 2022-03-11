@@ -1,4 +1,4 @@
-// Telegram bot screenshot -> https://i.imgur.com/HIdROMM.jpg
+// Telegram bot screenshot -> https://i.imgur.com/wMiFkQe.jpg
 // Add me on Telegram      -> https://t.me/NCCU_bot
 
 const jsSHA = require('jssha');
@@ -96,7 +96,7 @@ function getData(mode){
             }
         }
         // ^--- sort by StopStatus & EstimateTime ---^
-        let result = [str,"--"];
+        let result = [str,"--","<pre>"];
         for(var i=0;i<res.data.length;i++){
             if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
                 str = `${res.data[i].RouteName.Zh_tw}`;
@@ -126,6 +126,7 @@ function getData(mode){
                 result.push(str);
             }
         }
+        result.push(`</pre>`);
         result.push(`--`);
         result.push(`資料最後更新時間：\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}`);
         console.log(`${mode} data update`)
