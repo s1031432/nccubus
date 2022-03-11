@@ -10,14 +10,14 @@
   <p align="center">
     <br />
     <a href="https://t.me/NCCU_bot">Demo on Telegram</a>
-    ¡P
+    ï¿½P
     <a href="mailto:108753132@nccu.edu.tw">Report bug or feature</a>
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-¬F¤j±`¥Î¤½¨®¸ô½u¬d¸ß
+ï¿½Fï¿½jï¿½`ï¿½Î¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½uï¿½dï¿½ï¿½
 
 ### Built With
 
@@ -40,10 +40,10 @@
     npm start
 ```
 ### Demo on Telegram screenshot
-<img src="https://i.imgur.com/HIdROMM.jpg" alt="demo" style="width:360px;"/>
+<img src="https://i.imgur.com/wMiFkQe.jpg" alt="demo" style="width:360px;"/>
 
 
 <!-- CONTACT -->
 ## Contact
 
-¶ÀÖö­ð - [Facebook](https://fb.com/ty80517) - 108753132@nccu.edu.tw
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - [Facebook](https://fb.com/ty80517) - 108753132@nccu.edu.tw
