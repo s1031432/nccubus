@@ -118,7 +118,7 @@ function getData(mode){
                     str = `❌ ${str} - 末班車已過`;
                 }
                 else if(res.data[i].StopStatus == 4){
-                    str = `❔ ${str} - 今日未營運`;
+                    str = `❌ ${str} - 今日未營運`;
                 }
                 if(res.data[i].IsLastBus){
                     str += ` 🔴末班車！`;
@@ -126,9 +126,9 @@ function getData(mode){
                 result.push(str);
             }
         }
-        result.push(`--</pre>`);
+        result.push(`--`);
         result.push(`資料最後更新時間：\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}`);
-        console.log(`${mode} data update`)
+        console.log(`${mode} data update</pre>`)
         if(mode == "zoo_nccu1"){
             zoo_nccu1_data = result.join("\n");
         }
