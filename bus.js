@@ -96,7 +96,7 @@ function getData(mode){
             }
         }
         // ^--- sort by StopStatus & EstimateTime ---^
-        let result = [str];
+        let result = [str,"--"];
         for(var i=0;i<res.data.length;i++){
             if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
                 str = `${res.data[i].RouteName.Zh_tw}`;

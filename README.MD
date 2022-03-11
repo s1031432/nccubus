@@ -1,4 +1,4 @@
-<div id="top" style="text-align:center; margin:0 auto;" align="center">
+<div align="center">
     <img src="https://img.shields.io/github/issues/s1031432/nccubus">
     <img src="https://img.shields.io/github/forks/s1031432/nccubus">
     <img src="https://img.shields.io/github/stars/s1031432/nccubus">
@@ -26,8 +26,6 @@
 * [Express](https://expressjs.com/zh-tw/)
 * [PTX API](https://ptx.transportdata.tw/PTX/)
 
-
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -35,16 +33,17 @@
 [BotFather](https://t.me/botfather)
 
 ### Sign up and get ptx API ID&Key
-[ptx](https://ptx.transportdata.tw/PTX/)
+[PTX API](https://ptx.transportdata.tw/PTX/)
 
 ### Run Telegram bot on local server or you can deploy to the Cloud
 ```sh
     node bus.js
 ```
+### Demo on Telegram screenshot
+<img src="https://i.imgur.com/HIdROMM.jpg" alt="demo" style="width:360px;"/>
+
 
 <!-- CONTACT -->
 ## Contact
 
 ¶ÀÖö­ð - [Facebook](https://fb.com/ty80517) - 108753132@nccu.edu.tw
-
-Project Link: [https://github.com/s1031432/dbfinal](https://github.com/s1031432/dbfinal)
