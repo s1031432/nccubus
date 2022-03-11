@@ -50,25 +50,25 @@ function getData(mode){
         var stationID = 2442;
         var whiteList0 = zoo_nccu1_0;
         var whiteList1 = zoo_nccu1_1;
-        var str = "➡️ 動物園站（往政大）";
+        var str = "<pre>➡️ 動物園站(往政大)";
     }
     else if(mode == "nccu_zoo"){
         var stationID = 2415;
         var whiteList0 = nccu_zoo_0;
         var whiteList1 = nccu_zoo_1;
-        var str = "➡️ 政大站（往動物園）";
+        var str = "<pre>➡️ 政大站(往動物園)";
     }
     else if(mode == "nccu1_zoo"){
         var stationID = 1001400;
         var whiteList0 = nccu1_zoo_0;
         var whiteList1 = nccu1_zoo_1;
-        var str = "➡️ 政大一站（往動物園）";
+        var str = "<pre>➡️ 政大一站(往動物園)";
     }
     else if(mode == "xinguang"){
         var stationID = 1000854;
         var whiteList0 = xinguang_0;
         var whiteList1 = xinguang_1;
-        var str = "➡️ 新光路口（龍角前）";
+        var str = "<pre>➡️ 新光路口(龍角前)";
     }
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
@@ -96,7 +96,7 @@ function getData(mode){
             }
         }
         // ^--- sort by StopStatus & EstimateTime ---^
-        let result = [str,"--","<pre>"];
+        let result = [str,"--"];
         for(var i=0;i<res.data.length;i++){
             if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
                 str = `${res.data[i].RouteName.Zh_tw}`;
@@ -126,8 +126,7 @@ function getData(mode){
                 result.push(str);
             }
         }
-        result.push(`</pre>`);
-        result.push(`--`);
+        result.push(`--</pre>`);
         result.push(`資料最後更新時間：\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}`);
         console.log(`${mode} data update`)
         if(mode == "zoo_nccu1"){
