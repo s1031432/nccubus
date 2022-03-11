@@ -127,7 +127,7 @@ function getData(mode){
             }
         }
         result.push(`--`);
-        result.push(`資料最後更新時間：\n${getDateTime.getDateTime(new Date())}`);
+        result.push(`資料最後更新時間：\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}`);
         console.log(`${mode} data update`)
         if(mode == "zoo_nccu1"){
             zoo_nccu1_data = result.join("\n");
@@ -175,6 +175,6 @@ var packageInfo = require('./package.json');
 app.get('/', function (req, res) {
     res.json({ version: packageInfo.version });
 });
-var server = app.listen(process.env.PORT || 5000, function () {
+app.listen(process.env.PORT || 5000, function () {
     console.log('Server is running...');
 });
