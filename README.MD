@@ -3,10 +3,12 @@
     <img src="https://img.shields.io/github/package-json/v/s1031432/nccubus">
     <img src="https://img.shields.io/github/languages/top/s1031432/nccubus">
     <br>
-    <img src="https://img.shields.io/github/issues/s1031432/nccubus">
     <img src="https://img.shields.io/github/forks/s1031432/nccubus">
     <img src="https://img.shields.io/github/stars/s1031432/nccubus">
     <img src="https://img.shields.io/github/license/s1031432/nccubus">
+    <img src="https://img.shields.io/github/commit-activity/w/s1031432/nccubus">
+    <img src="https://img.shields.io/github/last-commit/s1031432/nccubus">
+    <img src="https://img.shields.io/github/issues/s1031432/nccubus">
     <br>
     <img src="https://img.shields.io/badge/Node.js-v14.18.1-brightgreen">
     <img src="https://img.shields.io/badge/Express-v4.17.3-brightgreen">
