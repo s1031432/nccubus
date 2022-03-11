@@ -112,13 +112,13 @@ function getData(mode){
                     }
                 }
                 else if(res.data[i].StopStatus == 2){
-                    str += `⚠️ ${str} - 交管不停靠`;
+                    str = `⚠️ ${str} - 交管不停靠`;
                 }
                 else if(res.data[i].StopStatus == 3){
                     str = `❌ ${str} - 末班車已過`;
                 }
                 else if(res.data[i].StopStatus == 4){
-                    str += `❔ ${str} - 今日未營運`;
+                    str = `❔ ${str} - 今日未營運`;
                 }
                 if(res.data[i].IsLastBus){
                     str += ` 🔴末班車！`;
