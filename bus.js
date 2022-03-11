@@ -151,16 +151,16 @@ bot.onText(/\/start$/, (msg) => {
     bot.sendMessage(chatId, replyMsg);
 });
 bot.onText(/\/zoo_nccu1$/, (msg) => {
-    bot.sendMessage(msg.chat.id, zoo_nccu1_data);
+    bot.sendMessage(msg.chat.id, zoo_nccu1_data, {parse_mode: 'HTML'});
 });
 bot.onText(/\/nccu_zoo$/, (msg) => {
-    bot.sendMessage(msg.chat.id, nccu_zoo_data);
+    bot.sendMessage(msg.chat.id, nccu_zoo_data, {parse_mode: 'HTML'});
 });
 bot.onText(/\/nccu1_zoo$/, (msg) => {
-    bot.sendMessage(msg.chat.id, nccu1_zoo_data);
+    bot.sendMessage(msg.chat.id, nccu1_zoo_data, {parse_mode: 'HTML'});
 });
 bot.onText(/\/xinguang$/, (msg) => {
-    bot.sendMessage(msg.chat.id, xinguang_data);
+    bot.sendMessage(msg.chat.id, xinguang_data, {parse_mode: 'HTML'});
 });
 getData("zoo_nccu1");
 getData("nccu_zoo");
