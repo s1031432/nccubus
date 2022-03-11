@@ -10,14 +10,14 @@
   <p align="center">
     <br />
     <a href="https://t.me/NCCU_bot">Demo on Telegram</a>
-    �P
+    ·
     <a href="mailto:108753132@nccu.edu.tw">Report bug or feature</a>
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-�F�j�`�Τ������u�d��
+政大常用公車路線查詢
 
 ### Built With
 
@@ -46,4 +46,4 @@
 <!-- CONTACT -->
 ## Contact
 
-������ - [Facebook](https://fb.com/ty80517) - 108753132@nccu.edu.tw
+黃翊唐 - [Facebook](https://fb.com/ty80517) - 108753132@nccu.edu.tw
