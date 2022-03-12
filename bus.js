@@ -95,6 +95,8 @@ function getData(mode){
             headers: GetAuthorizationHeader(),
             gzip: true
         }, function(error, response, body){
+            if(error)
+                resolve(error)
             body = JSON.parse(body);
             body = sortBusData(body);
             let result = [str,"--"];
