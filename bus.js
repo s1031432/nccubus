@@ -49,14 +49,15 @@ var xinguang_data = "";
 var nccu1_data = "";
 
 function getData(mode){
+    console.log(`getData(${mode});`)
     let now = getDateTime.getDateTime(new Date());
     let hours = now[11]+now[12];
 
     // 02:00 ~ 05:00 don't call api
     if((Number(hours) < 7 && Number(hours) > 1) )
-        return;
+        return 0;
     
-    console.log(`getData(${mode});`)
+    
     if(mode == "zoo_nccu1"){
         var stationID = 2442;
         var whiteList0 = zoo_nccu1_0;
