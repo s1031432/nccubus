@@ -99,7 +99,6 @@ function getData(mode){
             if(error){
                 console.log("-- ERROR: ", mode);
                 getData(mode);
-                throw error;
             }
             body = JSON.parse(body);
             body = sortBusData(body);
@@ -141,7 +140,6 @@ function getData(mode){
         }
         catch(e){
             console.log(e);
-            throw e;
         }
     });
 }
