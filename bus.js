@@ -193,9 +193,9 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg += "<b><u>➡️ /xinguang</u></b>\n　查看停靠新光路口站的所有公車到站時間。\n";
     replyMsg += "<b><u>➡️ /nccu1</u></b>\n　查看政大一站(校門口)的所有公車到站時間。\n";
     replyMsg += "<b><u>⚠️ 注意</u></b>\n"
-    replyMsg += "　本服務佈署於Heroku伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料的準確性及服務的穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
+    replyMsg += "　本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料的準確性及服務的穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
     replyMsg += "</pre>";
-    bot.sendMessage(msg.chat.id, replyMsg);
+    bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
 bot.onText(/\/zoo_nccu1$/, (msg) => {
     bot.sendMessage(msg.chat.id, zoo_nccu1_data, {parse_mode: 'HTML'});
