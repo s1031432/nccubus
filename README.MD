@@ -28,9 +28,26 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-政大常用公車路線查詢
+政大常用公車路線查詢(Telegram Bot)
 
-### Built With
+## Telegram Bot Command List
+<table>
+    <tr>
+        <td>Command</td><td>Describe</td>
+    </tr>
+    <tr>
+        <td><b><u><a>/start</a></u></b></td><td>機器人簡短自我介紹。</td>
+    </tr>
+    <tr>
+        <td><b><u>/zoo_nccu1</u></b></td><td>查看捷運動物園站到政大一站(校門口)公車到站時間。只會顯示有停靠政大一站的公車，有些公車(如295, 679)雖不停靠政大一站(校門口)，但<b>會停靠新光路口</b>，就不會被列出。</td>
+    </tr>
+    <tr><td><b><u>/nccu_zoo</u></b></td><td>查看政大站(麥側萊爾富)到捷運動物園站的公車到站時間。</td></tr>
+    <tr><td><b><u>/nccu1_zoo</u></b></td><td>查看政大一站(Jason超市對面)到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車(如530)雖有停靠政大一站(Jason超市對面)，但<b>不會停靠捷運動物園站</b>，就不會被列出。</td></tr>
+    <tr><td><b><u>/xinguang</u></b></td><td>查看停靠新光路口站(龍角前)的所有公車到站時間。</td></tr>
+    <tr><td><b><u>/nccu1</u></b></td><td>查看政大一站(校門口)的所有公車到站時間。</td></tr>
+</table>
+
+## Built With
 
 * [Telegram](https://web.telegram.org/k/)
 * [Heroku](https://dashboard.heroku.com/)
