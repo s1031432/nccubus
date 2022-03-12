@@ -3,6 +3,7 @@
 
 const jsSHA = require('jssha');
 const axios = require('axios');
+const request = require('request');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
 const telegramBot = require('node-telegram-bot-api');
@@ -89,46 +90,49 @@ function getData(mode){
     }
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
-    axios.get(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
-        headers: GetAuthorizationHeader(),
-    }).then((res)=>{
-        // console.log(res.data);
-        res = sortBusData(res);
-        let result = [str,"--"];
-        for(var i=0;i<res.data.length;i++){
-            if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
-                str = `${res.data[i].RouteName.Zh_tw}`;
-                if(res.data[i].StopStatus == 0){
-                    str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分`;
-                }
-                else if(res.data[i].StopStatus == 1){
-                    if(res.data[i].EstimateTime){
-                        str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分（尚未發車）`;
+    return new Promise(resolve => { 
+        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
+            headers: GetAuthorizationHeader(),
+        }).then((res)=>{
+            // console.log(res.data);
+            res = sortBusData(res);
+            let result = [str,"--"];
+            for(var i=0;i<res.data.length;i++){
+                if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
+                    str = `${res.data[i].RouteName.Zh_tw}`;
+                    if(res.data[i].StopStatus == 0){
+                        str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分`;
                     }
-                    else if(res.data[i].EstimateTime == undefined){
-                        str = `💤 ${str} - 尚未發車`;
+                    else if(res.data[i].StopStatus == 1){
+                        if(res.data[i].EstimateTime){
+                            str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分（尚未發車）`;
+                        }
+                        else if(res.data[i].EstimateTime == undefined){
+                            str = `💤 ${str} - 尚未發車`;
+                        }
                     }
+                    else if(res.data[i].StopStatus == 2){
+                        str = `⚠️ ${str} - 交管不停靠`;
+                    }
+                    else if(res.data[i].StopStatus == 3){
+                        str = `❌ ${str} - 末班車已過`;
+                    }
+                    else if(res.data[i].StopStatus == 4){
+                        str = `❌ ${str} - 今日未營運`;
+                    }
+                    if(res.data[i].IsLastBus){
+                        str += ` 🔴末班車！`;
+                    }
+                    result.push(str);
                 }
-                else if(res.data[i].StopStatus == 2){
-                    str = `⚠️ ${str} - 交管不停靠`;
-                }
-                else if(res.data[i].StopStatus == 3){
-                    str = `❌ ${str} - 末班車已過`;
-                }
-                else if(res.data[i].StopStatus == 4){
-                    str = `❌ ${str} - 今日未營運`;
-                }
-                if(res.data[i].IsLastBus){
-                    str += ` 🔴末班車！`;
-                }
-                result.push(str);
             }
-        }
-        let nowMs = (+new Date())+8*60*60*1000;
-        result.push(`--`);
-        result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
-        console.log(`${mode} data update`)
-        updateBusResult(mode, result);
+            let nowMs = (+new Date())+8*60*60*1000;
+            result.push(`--`);
+            result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
+            console.log(`${mode} data update`)
+            updateBusResult(mode, result);
+            resolve();
+        });
     });
 }
 function sortBusData(res){
