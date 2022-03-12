@@ -13,7 +13,6 @@
   "author": "Huang, Yi-Tang",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.26.1",
     "express": "^4.17.3",
     "jssha": "^3.2.0",
     "node-telegram-bot-api": "^0.56.0"
