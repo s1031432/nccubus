@@ -168,7 +168,7 @@ function sortBusData(body){
             }
         }
     }
-    return res;
+    return body;
 }
 function updateBusResult(mode, result){
     if(mode == "zoo_nccu1"){
