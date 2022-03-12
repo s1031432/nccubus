@@ -186,12 +186,12 @@ function updateBusResult(mode, result){
 bot.onText(/\/start$/, (msg) => {
     console.log(msg);
     var replyMsg = "";
-    replyMsg += "<code><b><u>/zoo_nccu1</u></b></code>\n　　查看捷運動物園站到政大一站(校門口)公車到站時間。只會顯示有停靠政大一站的公車，有些公車(如295, 679)雖不停靠政大一站(校門口)，但會停靠新光路口，就不會被列出。\n";
-    replyMsg += "<code><b><u>/nccu_zoo</u></b></code>\n　　查看政大站(麥側萊爾富)到捷運動物園站的公車到站時間。\n";
-    replyMsg += "<code><b><u>/nccu1_zoo</u></b></code>\n　　查看政大一站(Jason超市對面)到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車(如530)雖有停靠政大一站(Jason超市對面)，但不會停靠捷運動物園站，就不會被列出。\n";
-    replyMsg += "<code><b><u>/xinguang</u></b></code>\n　　查看停靠新光路口站的所有公車到站時間。\n";
-    replyMsg += "<code><b><u>/nccu1</u></b></code>\n　　查看政大一站(校門口)的所有公車到站時間。\n";
-    replyMsg += "<b><u>⚠️注意</u></b>\n"
+    replyMsg += "<code><b><u>/zoo_nccu1</u></b></code>\n　　查看捷運動物園站到政大一站(校門口)公車到站時間。只會顯示有停靠政大一站的公車，有些公車(如295, 679)雖不停靠政大一站(校門口)，但會停靠新光路口，就不會被列出。\n\n";
+    replyMsg += "<code><b><u>/nccu_zoo</u></b></code>\n　　查看政大站(麥側萊爾富)到捷運動物園站的公車到站時間。\n\n";
+    replyMsg += "<code><b><u>/nccu1_zoo</u></b></code>\n　　查看政大一站(Jason超市對面)到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車(如530)雖有停靠政大一站(Jason超市對面)，但不會停靠捷運動物園站，就不會被列出。\n\n";
+    replyMsg += "<code><b><u>/xinguang</u></b></code>\n　　查看停靠新光路口站的所有公車到站時間。\n\n";
+    replyMsg += "<code><b><u>/nccu1</u></b></code>\n　　查看政大一站(校門口)的所有公車到站時間。\n\n";
+    replyMsg += "<b>⚠️注意</b>\n"
     replyMsg += "　　本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
