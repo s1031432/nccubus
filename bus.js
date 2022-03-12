@@ -143,6 +143,7 @@ function getData(mode){
         catch(e){
             console.log(e);
         }
+        return;
     });
 }
 function sortBusData(body){
