@@ -93,7 +93,7 @@ function getData(mode){
     request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
         headers: GetAuthorizationHeader(),
         gzip: true,
-        timeout: 2000,
+        timeout: 2500,
     }, function(error, response, body){
         try{
             if(error){
@@ -233,7 +233,7 @@ async function main(){
     getData("nccu1_zoo");
     getData("xinguang");
     getData("nccu1");
-    setTimeout(main, 20000)
+    setTimeout(main, 25000)
 }
 
 var app = express();
