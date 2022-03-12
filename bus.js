@@ -16,15 +16,18 @@ const bot = new telegramBot(token, {polling: true});
 // 捷運動物園站 往 政大一站
 const zoo_nccu1_0 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "282", "66", "676", "611"]     // GO
 const zoo_nccu1_1 = ["G1", "BR18", "933"]                                                           // Return
-// 政大站 往 動物園站
+// 政大站(麥側萊爾富) 往 動物園站
 const nccu_zoo_0 = ["933", "BR18", "G1"];
 const nccu_zoo_1 = ["236Shuttle", "282", "295", "295Sub", "611", "66", "679", "BR6", "Roosevelt Rd. Metro Bus"];
-// 政大一站 往 動物園站
+// 政大一站(Jason前) 往 動物園站
 const nccu1_zoo_0 = ["933", "G1"];
 const nccu1_zoo_1 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "66"];
 // 新光路口站的所有公車
 const xinguang_0 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "282", "295", "295Sub", "530", "611", "66", "676", "679", "BR11", "BR11Sub", "BR3", "BR6"];
 const xinguang_1 = ["933", "S10", "S10Shuttle", "BR5", "G1"];
+// 政大一(校門前)的所有公車
+const nccu1_0 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6"];
+const nccu1_1 = ["933", "G1"];
 
 function GetAuthorizationHeader() {
     // Get AppID & AppKey: https://ptx.transportdata.tw/PTX/
@@ -43,8 +46,16 @@ var zoo_nccu1_data = "";
 var nccu_zoo_data = "";
 var nccu1_zoo_data = "";
 var xinguang_data = "";
+var nccu1_data = "";
 
 function getData(mode){
+    let now = getDateTime.getDateTime(new Date());
+    let hours = now[11]+now[12];
+
+    // 02:00 ~ 05:00 don't call api
+    if(Number(hours) < 5 && Number(hours) > 1)
+        return;
+    
     console.log(`getData(${mode});`)
     if(mode == "zoo_nccu1"){
         var stationID = 2442;
@@ -62,7 +73,7 @@ function getData(mode){
         var stationID = 1001400;
         var whiteList0 = nccu1_zoo_0;
         var whiteList1 = nccu1_zoo_1;
-        var str = "<pre>➡️ 政大一站(往動物園)";
+        var str = "<pre>➡️ 政大一站(Jason前往動物園)";
     }
     else if(mode == "xinguang"){
         var stationID = 1000854;
@@ -70,32 +81,19 @@ function getData(mode){
         var whiteList1 = xinguang_1;
         var str = "<pre>➡️ 新光路口(龍角前)";
     }
+    else if(mode == "nccu1"){
+        var stationID = 1001409;
+        var whiteList0 = nccu1_0;
+        var whiteList1 = nccu1_1;
+        var str = "<pre>➡️ 政大一（校門前）";;
+    }
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
     axios.get(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
         headers: GetAuthorizationHeader(),
     }).then((res)=>{
         // console.log(res.data);
-        // v--- sort by StopStatus & EstimateTime ---v
-        for(var i=0;i<res.data.length-1;i++){
-            for(var j=i+1;j<res.data.length;j++){
-                if( (res.data[i].EstimateTime == undefined && res.data[j].EstimateTime != undefined) || (res.data[i].StopStatus > 1 && res.data[j].StopStatus < 2) ){
-                    var temp = res.data[i];
-                    res.data[i] = res.data[j];
-                    res.data[j] = temp;
-                }
-            }
-        }
-        for(var i=0;i<res.data.length-1;i++){
-            for(var j=i+1;j<res.data.length;j++){
-                if(res.data[j].EstimateTime < res.data[i].EstimateTime){
-                    var temp = res.data[i];
-                    res.data[i] = res.data[j];
-                    res.data[j] = temp;
-                }
-            }
-        }
-        // ^--- sort by StopStatus & EstimateTime ---^
+        res = sortBusData(res);
         let result = [str,"--"];
         for(var i=0;i<res.data.length;i++){
             if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
@@ -126,28 +124,64 @@ function getData(mode){
                 result.push(str);
             }
         }
+        let nowMs = (+new Date())+8*60*60*1000;
         result.push(`--`);
-        result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(((+new Date())+8*60*60*1000)))}</pre>`);
+        result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
         console.log(`${mode} data update`)
-        if(mode == "zoo_nccu1"){
-            zoo_nccu1_data = result.join("\n");
-        }
-        else if(mode == "nccu_zoo"){
-            nccu_zoo_data = result.join("\n");
-        }
-        else if(mode == "nccu1_zoo"){
-            nccu1_zoo_data = result.join("\n");
-        }
-        else if(mode == "xinguang"){
-            xinguang_data = result.join("\n");
-        }
+        updateBusResult(mode, result);
     });
 }
+function sortBusData(res){
+    // sort data by StopStatus & EstimateTime
+    for(var i=0;i<res.data.length-1;i++){
+        for(var j=i+1;j<res.data.length;j++){
+            if( (res.data[i].EstimateTime == undefined && res.data[j].EstimateTime != undefined) || (res.data[i].StopStatus > 1 && res.data[j].StopStatus < 2) ){
+                var temp = res.data[i];
+                res.data[i] = res.data[j];
+                res.data[j] = temp;
+            }
+        }
+    }
+    for(var i=0;i<res.data.length-1;i++){
+        for(var j=i+1;j<res.data.length;j++){
+            if(res.data[j].EstimateTime < res.data[i].EstimateTime){
+                var temp = res.data[i];
+                res.data[i] = res.data[j];
+                res.data[j] = temp;
+            }
+        }
+    }
+    return res;
+}
+function updateBusResult(mode, result){
+    if(mode == "zoo_nccu1"){
+        zoo_nccu1_data = result.join("\n");
+    }
+    else if(mode == "nccu_zoo"){
+        nccu_zoo_data = result.join("\n");
+    }
+    else if(mode == "nccu1_zoo"){
+        nccu1_zoo_data = result.join("\n");
+    }
+    else if(mode == "xinguang"){
+        xinguang_data = result.join("\n");
+    }
+    else if(mode == "nccu1"){
+        nccu1_data = result.join("\n");
+    }
+}
+
 bot.onText(/\/start$/, (msg) => {
     console.log(msg);
-    const chatId   = msg.chat.id;
-    let   replyMsg = `Hi, ${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\nmsg.chat.id:${chatId}`
-    bot.sendMessage(chatId, replyMsg);
+    var replyMsg = "";
+    replyMsg += "<pre>";
+    replyMsg += "<b><u>➡️ /zoo_nccu1</b></u>\n　查看捷運動物園站到政大一站(校門口)公車到站時間。只會顯示有停靠政大一站的公車，有些公車(如295, 679)雖不停靠政大一站(校門口)，但會停靠新光路口，就不會被列出。\n";
+    replyMsg += "<b><u>➡️ /nccu_zoo</b></u>\n　查看政大站(麥側萊爾富)到捷運動物園站的公車到站時間。\n";
+    replyMsg += "<b><u>➡️ /nccu1_zoo</b></u>\n　查看政大一站(Jason超市對面)到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車(如530)雖有停靠政大一站(Jason超市對面)，但不會停靠捷運動物園站，就不會被列出。\n";
+    replyMsg += "<b><u>➡️ /xinguang</b></u>\n　查看停靠新光路口站的所有公車到站時間。\n";
+    replyMsg += "<b><u>➡️ /nccu1_data</b></u>\n　查看政大一站(校門口)的所有公車到站時間。";
+    replyMsg += "</pre>";
+    bot.sendMessage(msg.chat.id, replyMsg);
 });
 bot.onText(/\/zoo_nccu1$/, (msg) => {
     bot.sendMessage(msg.chat.id, zoo_nccu1_data, {parse_mode: 'HTML'});
@@ -161,14 +195,20 @@ bot.onText(/\/nccu1_zoo$/, (msg) => {
 bot.onText(/\/xinguang$/, (msg) => {
     bot.sendMessage(msg.chat.id, xinguang_data, {parse_mode: 'HTML'});
 });
+bot.onText(/\/xinguang$/, (msg) => {
+    bot.sendMessage(msg.chat.id, nccu1_data, {parse_mode: 'HTML'});
+});
+
 getData("zoo_nccu1");
 getData("nccu_zoo");
 getData("nccu1_zoo");
 getData("xinguang");
+getData("nccu1");
 setInterval(getData, 20000, "zoo_nccu1");
 setInterval(getData, 20000, "nccu_zoo");
 setInterval(getData, 20000, "nccu1_zoo");
 setInterval(getData, 20000, "xinguang");
+setInterval(getData, 20000, "nccu1");
 
 var app = express();
 var packageInfo = require('./package.json');
