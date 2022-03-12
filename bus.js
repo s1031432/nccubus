@@ -49,8 +49,9 @@ var xinguang_data = "";
 var nccu1_data = "";
 
 function getData(mode){
+    
     console.log(`getData(${mode});`)
-    let now = getDateTime.getDateTime(new Date());
+    let now = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
     let hours = now[11]+now[12];
     console.log("H", hours)
     // 02:00 ~ 05:00 don't call api
