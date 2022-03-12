@@ -97,7 +97,7 @@ function getData(mode){
         }, function(error, response, body){
             console.log(response);
             console.log(JSON.parse(body));
-            res = sortBusData(res);
+            body = sortBusData(body);
             let result = [str,"--"];
             for(var i=0;i<body.length;i++){
                 if( (whiteList0.indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (whiteList1.indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
