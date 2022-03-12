@@ -92,7 +92,8 @@ function getData(mode){
 
     request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
         headers: GetAuthorizationHeader(),
-        gzip: true
+        gzip: true,
+        timeout: 2500,
     }, function(error, response, body){
         try{
             if(error)
@@ -222,7 +223,6 @@ bot.onText(/\/nccu1$/, (msg) => {
 
 
 async function main(){
-
     getData("zoo_nccu1");
     getData("nccu_zoo");
     getData("nccu1_zoo");
