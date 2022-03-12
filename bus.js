@@ -53,7 +53,7 @@ function getData(mode){
     let hours = now[11]+now[12];
 
     // 02:00 ~ 05:00 don't call api
-    if(Number(hours) < 5 && Number(hours) > 1)
+    if((Number(hours) < 7 && Number(hours) > 1) )
         return;
     
     console.log(`getData(${mode});`)
@@ -97,6 +97,7 @@ function getData(mode){
     }, function(error, response, body){
         try{
             if(error){
+                console.log("ERROR: ", mode);
                 getData(mode);
                 throw error;
             }
