@@ -93,6 +93,7 @@ function getData(mode){
     return new Promise(resolve => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
+            gzip: true
         }, function(error, response, body){
             console.log(response);
             console.log(JSON.parse(body));
