@@ -52,10 +52,13 @@ function getData(mode){
     console.log(`getData(${mode});`)
     let now = getDateTime.getDateTime(new Date());
     let hours = now[11]+now[12];
-
+    console.log("H", hours)
     // 02:00 ~ 05:00 don't call api
-    if((Number(hours) < 7 && Number(hours) > 1) )
+    if((Number(hours) < 7 && Number(hours) > 1) ){
+        
+        console.log("AAA")
         return 0;
+    }
     
     
     if(mode == "zoo_nccu1"){
