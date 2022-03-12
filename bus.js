@@ -219,11 +219,11 @@ bot.onText(/\/nccu1$/, (msg) => {
 
 async function main(){
     // prevent API response error by setTimeout()
-    setTimeout(getData, 3000, "zoo_nccu1");
-    setTimeout(getData, 6000, "nccu_zoo");
-    setTimeout(getData, 9000, "nccu1_zoo");
-    setTimeout(getData, 12000, "xinguang");
-    setTimeout(getData, 15000, "nccu1");
+    getData("zoo_nccu1");
+    getData("nccu_zoo");
+    getData("nccu1_zoo");
+    getData("xinguang");
+    getData("nccu1");
     setTimeout(main, 20000)
 }
 
