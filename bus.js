@@ -93,11 +93,13 @@ function getData(mode){
     request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
         headers: GetAuthorizationHeader(),
         gzip: true,
-        timeout: 2500,
+        timeout: 2000,
     }, function(error, response, body){
         try{
-            if(error)
-                throw error
+            if(error){
+                getData(mode);
+                throw error;
+            }
             body = JSON.parse(body);
             body = sortBusData(body);
             let result = [str,"--"];
