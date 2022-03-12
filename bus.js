@@ -67,13 +67,13 @@ function getData(mode){
         var stationID = 2415;
         var whiteList0 = nccu_zoo_0;
         var whiteList1 = nccu_zoo_1;
-        var str = "<pre>➡️ 政大站(往動物園)";
+        var str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
     }
     else if(mode == "nccu1_zoo"){
         var stationID = 1001400;
         var whiteList0 = nccu1_zoo_0;
         var whiteList1 = nccu1_zoo_1;
-        var str = "<pre>➡️ 政大一站(Jason前往動物園)";
+        var str = "<pre>➡️ 政大一站(Jason對面往動物園)";
     }
     else if(mode == "xinguang"){
         var stationID = 1000854;
@@ -85,7 +85,7 @@ function getData(mode){
         var stationID = 1001409;
         var whiteList0 = nccu1_0;
         var whiteList1 = nccu1_1;
-        var str = "<pre>➡️ 政大一（校門前）";;
+        var str = "<pre>➡️ 政大一(校門前)";
     }
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
