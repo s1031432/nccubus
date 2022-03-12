@@ -133,6 +133,7 @@ function getData(mode){
 }
 function sortBusData(res){
     // sort data by StopStatus & EstimateTime
+    // --sort by StopStatus
     for(var i=0;i<res.data.length-1;i++){
         for(var j=i+1;j<res.data.length;j++){
             if( res.data[i].StopStatus > res.data[j].StopStatus){
@@ -142,6 +143,7 @@ function sortBusData(res){
             }
         }
     }
+    // --sort by EstimateTime undefined or not undefined
     for(var i=0;i<res.data.length-1;i++){
         for(var j=i+1;j<res.data.length;j++){
             if( (res.data[i].EstimateTime == undefined && res.data[j].EstimateTime != undefined) ){
@@ -151,6 +153,7 @@ function sortBusData(res){
             }
         }
     }
+    // --sort by EstimateTime
     for(var i=0;i<res.data.length-1;i++){
         for(var j=i+1;j<res.data.length;j++){
             if(res.data[j].EstimateTime < res.data[i].EstimateTime){
@@ -204,7 +207,7 @@ bot.onText(/\/nccu1_zoo$/, (msg) => {
 bot.onText(/\/xinguang$/, (msg) => {
     bot.sendMessage(msg.chat.id, xinguang_data, {parse_mode: 'HTML'});
 });
-bot.onText(/\/xinguang$/, (msg) => {
+bot.onText(/\/nccu1$/, (msg) => {
     bot.sendMessage(msg.chat.id, nccu1_data, {parse_mode: 'HTML'});
 });
 
