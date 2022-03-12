@@ -49,89 +49,86 @@ var xinguang_data = "";
 var nccu1_data = "";
 
 function getData(mode){
-    return new Promise((resolve, reject)=>{
+    let now = getDateTime.getDateTime(new Date());
+    let hours = now[11]+now[12];
 
-        let now = getDateTime.getDateTime(new Date());
-        let hours = now[11]+now[12];
-
-        // 02:00 ~ 05:00 don't call api
-        if(Number(hours) < 5 && Number(hours) > 1)
-            return;
-        
-        console.log(`getData(${mode});`)
-        if(mode == "zoo_nccu1"){
-            var stationID = 2442;
-            var whiteList0 = zoo_nccu1_0;
-            var whiteList1 = zoo_nccu1_1;
-            var str = "<pre>➡️ 動物園站(往政大)";
-        }
-        else if(mode == "nccu_zoo"){
-            var stationID = 2415;
-            var whiteList0 = nccu_zoo_0;
-            var whiteList1 = nccu_zoo_1;
-            var str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
-        }
-        else if(mode == "nccu1_zoo"){
-            var stationID = 1001400;
-            var whiteList0 = nccu1_zoo_0;
-            var whiteList1 = nccu1_zoo_1;
-            var str = "<pre>➡️ 政大一站(Jason對面往動物園)";
-        }
-        else if(mode == "xinguang"){
-            var stationID = 1000854;
-            var whiteList0 = xinguang_0;
-            var whiteList1 = xinguang_1;
-            var str = "<pre>➡️ 新光路口(龍角前)";
-        }
-        else if(mode == "nccu1"){
-            var stationID = 1001409;
-            var whiteList0 = nccu1_0;
-            var whiteList1 = nccu1_1;
-            var str = "<pre>➡️ 政大一(校門前)";
-        }
-        // Call ptx API to get bus data(json)
-        // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
-        axios.get(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
-            headers: GetAuthorizationHeader(),
-        }).then((res)=>{
-            // console.log(res.data);
-            res = sortBusData(res);
-            let result = [str,"--"];
-            for(var i=0;i<res.data.length;i++){
-                if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
-                    str = `${res.data[i].RouteName.Zh_tw}`;
-                    if(res.data[i].StopStatus == 0){
-                        str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分`;
-                    }
-                    else if(res.data[i].StopStatus == 1){
-                        if(res.data[i].EstimateTime){
-                            str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分（尚未發車）`;
-                        }
-                        else if(res.data[i].EstimateTime == undefined){
-                            str = `💤 ${str} - 尚未發車`;
-                        }
-                    }
-                    else if(res.data[i].StopStatus == 2){
-                        str = `⚠️ ${str} - 交管不停靠`;
-                    }
-                    else if(res.data[i].StopStatus == 3){
-                        str = `❌ ${str} - 末班車已過`;
-                    }
-                    else if(res.data[i].StopStatus == 4){
-                        str = `❌ ${str} - 今日未營運`;
-                    }
-                    if(res.data[i].IsLastBus){
-                        str += ` 🔴末班車！`;
-                    }
-                    result.push(str);
+    // 02:00 ~ 05:00 don't call api
+    if(Number(hours) < 5 && Number(hours) > 1)
+        return;
+    
+    console.log(`getData(${mode});`)
+    if(mode == "zoo_nccu1"){
+        var stationID = 2442;
+        var whiteList0 = zoo_nccu1_0;
+        var whiteList1 = zoo_nccu1_1;
+        var str = "<pre>➡️ 動物園站(往政大)";
+    }
+    else if(mode == "nccu_zoo"){
+        var stationID = 2415;
+        var whiteList0 = nccu_zoo_0;
+        var whiteList1 = nccu_zoo_1;
+        var str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
+    }
+    else if(mode == "nccu1_zoo"){
+        var stationID = 1001400;
+        var whiteList0 = nccu1_zoo_0;
+        var whiteList1 = nccu1_zoo_1;
+        var str = "<pre>➡️ 政大一站(Jason對面往動物園)";
+    }
+    else if(mode == "xinguang"){
+        var stationID = 1000854;
+        var whiteList0 = xinguang_0;
+        var whiteList1 = xinguang_1;
+        var str = "<pre>➡️ 新光路口(龍角前)";
+    }
+    else if(mode == "nccu1"){
+        var stationID = 1001409;
+        var whiteList0 = nccu1_0;
+        var whiteList1 = nccu1_1;
+        var str = "<pre>➡️ 政大一(校門前)";
+    }
+    // Call ptx API to get bus data(json)
+    // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
+    axios.get(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${stationID}?%24top=30&%24format=JSON`,{
+        headers: GetAuthorizationHeader(),
+    }).then((res)=>{
+        // console.log(res.data);
+        res = sortBusData(res);
+        let result = [str,"--"];
+        for(var i=0;i<res.data.length;i++){
+            if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
+                str = `${res.data[i].RouteName.Zh_tw}`;
+                if(res.data[i].StopStatus == 0){
+                    str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分`;
                 }
+                else if(res.data[i].StopStatus == 1){
+                    if(res.data[i].EstimateTime){
+                        str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分（尚未發車）`;
+                    }
+                    else if(res.data[i].EstimateTime == undefined){
+                        str = `💤 ${str} - 尚未發車`;
+                    }
+                }
+                else if(res.data[i].StopStatus == 2){
+                    str = `⚠️ ${str} - 交管不停靠`;
+                }
+                else if(res.data[i].StopStatus == 3){
+                    str = `❌ ${str} - 末班車已過`;
+                }
+                else if(res.data[i].StopStatus == 4){
+                    str = `❌ ${str} - 今日未營運`;
+                }
+                if(res.data[i].IsLastBus){
+                    str += ` 🔴末班車！`;
+                }
+                result.push(str);
             }
-            let nowMs = (+new Date())+8*60*60*1000;
-            result.push(`--`);
-            result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
-            console.log(`${mode} data update`)
-            updateBusResult(mode, result);
-        });
+        }
+        let nowMs = (+new Date())+8*60*60*1000;
+        result.push(`--`);
+        result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
+        console.log(`${mode} data update`)
+        updateBusResult(mode, result);
     });
 }
 function sortBusData(res){
@@ -217,11 +214,11 @@ bot.onText(/\/nccu1$/, (msg) => {
 
 async function main(){
     // prevent API response error by setTimeout()
-    setTimeout(getData, 2000, "zoo_nccu1");
-    setTimeout(getData, 4000, "nccu_zoo");
-    setTimeout(getData, 6000, "nccu1_zoo");
-    setTimeout(getData, 8000, "xinguang");
-    setTimeout(getData, 10000, "nccu1");
+    setTimeout(getData, 3000, "zoo_nccu1");
+    setTimeout(getData, 6000, "nccu_zoo");
+    setTimeout(getData, 9000, "nccu1_zoo");
+    setTimeout(getData, 12000, "xinguang");
+    setTimeout(getData, 15000, "nccu1");
     setTimeout(main, 20000)
 }
 
