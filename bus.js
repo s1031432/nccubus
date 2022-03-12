@@ -99,30 +99,30 @@ function getData(mode){
             console.log(JSON.parse(body));
             res = sortBusData(res);
             let result = [str,"--"];
-            for(var i=0;i<res.data.length;i++){
-                if( (whiteList0.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==0)  || (whiteList1.indexOf(res.data[i].RouteName.En)>-1 && res.data[i].Direction==1)){
-                    str = `${res.data[i].RouteName.Zh_tw}`;
-                    if(res.data[i].StopStatus == 0){
-                        str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分`;
+            for(var i=0;i<body.length;i++){
+                if( (whiteList0.indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (whiteList1.indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
+                    str = `${body[i].RouteName.Zh_tw}`;
+                    if(body[i].StopStatus == 0){
+                        str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
                     }
-                    else if(res.data[i].StopStatus == 1){
-                        if(res.data[i].EstimateTime){
-                            str = res.data[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(res.data[i].EstimateTime/60)}分（尚未發車）`;
+                    else if(body[i].StopStatus == 1){
+                        if(body[i].EstimateTime){
+                            str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分（尚未發車）`;
                         }
-                        else if(res.data[i].EstimateTime == undefined){
+                        else if(body[i].EstimateTime == undefined){
                             str = `💤 ${str} - 尚未發車`;
                         }
                     }
-                    else if(res.data[i].StopStatus == 2){
+                    else if(body[i].StopStatus == 2){
                         str = `⚠️ ${str} - 交管不停靠`;
                     }
-                    else if(res.data[i].StopStatus == 3){
+                    else if(body[i].StopStatus == 3){
                         str = `❌ ${str} - 末班車已過`;
                     }
-                    else if(res.data[i].StopStatus == 4){
+                    else if(body[i].StopStatus == 4){
                         str = `❌ ${str} - 今日未營運`;
                     }
-                    if(res.data[i].IsLastBus){
+                    if(body[i].IsLastBus){
                         str += ` 🔴末班車！`;
                     }
                     result.push(str);
@@ -137,35 +137,35 @@ function getData(mode){
         });
     });
 }
-function sortBusData(res){
+function sortBusData(body){
     // sort data by StopStatus & EstimateTime
     // --sort by StopStatus
-    for(var i=0;i<res.data.length-1;i++){
-        for(var j=i+1;j<res.data.length;j++){
-            if( res.data[i].StopStatus > res.data[j].StopStatus){
-                var temp = res.data[i];
-                res.data[i] = res.data[j];
-                res.data[j] = temp;
+    for(var i=0;i<body.length-1;i++){
+        for(var j=i+1;j<body.length;j++){
+            if( body[i].StopStatus > body[j].StopStatus){
+                var temp = body[i];
+                body[i] = body[j];
+                body[j] = temp;
             }
         }
     }
     // --sort by EstimateTime undefined or not undefined
-    for(var i=0;i<res.data.length-1;i++){
-        for(var j=i+1;j<res.data.length;j++){
-            if( (res.data[i].EstimateTime == undefined && res.data[j].EstimateTime != undefined) ){
-                var temp = res.data[i];
-                res.data[i] = res.data[j];
-                res.data[j] = temp;
+    for(var i=0;i<body.length-1;i++){
+        for(var j=i+1;j<body.length;j++){
+            if( (body[i].EstimateTime == undefined && body[j].EstimateTime != undefined) ){
+                var temp = body[i];
+                body[i] = body[j];
+                body[j] = temp;
             }
         }
     }
     // --sort by EstimateTime
-    for(var i=0;i<res.data.length-1;i++){
-        for(var j=i+1;j<res.data.length;j++){
-            if(res.data[j].EstimateTime < res.data[i].EstimateTime){
-                var temp = res.data[i];
-                res.data[i] = res.data[j];
-                res.data[j] = temp;
+    for(var i=0;i<body.length-1;i++){
+        for(var j=i+1;j<body.length;j++){
+            if(body[j].EstimateTime < body[i].EstimateTime){
+                var temp = body[i];
+                body[i] = body[j];
+                body[j] = temp;
             }
         }
     }
