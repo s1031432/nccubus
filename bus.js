@@ -135,7 +135,16 @@ function sortBusData(res){
     // sort data by StopStatus & EstimateTime
     for(var i=0;i<res.data.length-1;i++){
         for(var j=i+1;j<res.data.length;j++){
-            if( (res.data[i].EstimateTime == undefined && res.data[j].EstimateTime != undefined) || (res.data[i].StopStatus > 1 && res.data[j].StopStatus < 2) ){
+            if( res.data[i].StopStatus > res.data[j].StopStatus){
+                var temp = res.data[i];
+                res.data[i] = res.data[j];
+                res.data[j] = temp;
+            }
+        }
+    }
+    for(var i=0;i<res.data.length-1;i++){
+        for(var j=i+1;j<res.data.length;j++){
+            if( (res.data[i].EstimateTime == undefined && res.data[j].EstimateTime != undefined) ){
                 var temp = res.data[i];
                 res.data[i] = res.data[j];
                 res.data[j] = temp;
