@@ -132,7 +132,7 @@ function getData(mode){
             result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
             console.log(`${mode} data update`)
             updateBusResult(mode, result);
-            resolve();
+            resolve(200);
         });
     });
 }
