@@ -53,7 +53,7 @@
     npm start
 ```
 ### Demo on Telegram screenshot
-<img src="https://i.imgur.com/wMiFkQe.jpg" alt="demo" style="width:360px;"/>
+<img src="https://i.imgur.com/LifcWJP.jpg" alt="demo" style="width:360px;"/>
 
 
 <!-- CONTACT -->
