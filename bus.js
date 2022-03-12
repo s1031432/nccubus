@@ -96,6 +96,7 @@ function getData(mode){
             gzip: true
         }, function(error, response, body){
             console.log(JSON.parse(body));
+            body = JSON.parse(body);
             body = sortBusData(body);
             let result = [str,"--"];
             for(var i=0;i<body.length;i++){
