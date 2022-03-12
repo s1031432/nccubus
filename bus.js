@@ -97,7 +97,7 @@ function getData(mode){
     }, function(error, response, body){
         try{
             if(error)
-                console.log('err', error)
+                throw error
             body = JSON.parse(body);
             body = sortBusData(body);
             let result = [str,"--"];
