@@ -9,15 +9,10 @@ const telegramBot = require('node-telegram-bot-api');
 // fill in your telegram token
 const token = process.env.telegramtoken;
 const bot = new telegramBot(token, {polling: true});
-// Set bus list:
-// _0 -> The bus departs from the station
-// _1 -> The bus returns to the station
 
 data = require('./busdata.json');
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
-
-
 
 function GetAuthorizationHeader() {
     // Get AppID & AppKey: https://ptx.transportdata.tw/PTX/
@@ -184,7 +179,7 @@ bot.onText(/\/server$/, (msg) => {
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
 bot.on('message', async (msg) => {
-    if( Object.keys(data).indexOf(msg.text) > -1 ){
+    if( Object.keys(data).indexOf(msg.text.substring(1)) > -1 ){
         serverCalledCount += 1;
         let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
