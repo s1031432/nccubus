@@ -189,7 +189,7 @@ bot.on('message', async (msg) => {
 
     serverCalledCount += 1;
     // if(/^\//.test(msg.text)){
-    if(msg.text == "nccu1" || msg.text == "xinguang" || msg.text == "zoo_nccu1" || msg.text == "nccu_zoo" || msg.text == "nccu1_zoo"){
+    if(msg.text == "/nccu1" || msg.text == "/xinguang" || msg.text == "/zoo_nccu1" || msg.text == "/nccu_zoo" || msg.text == "/nccu1_zoo"){
         let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
             let replyMsg = "深夜時間，到站時間停止更新。";
