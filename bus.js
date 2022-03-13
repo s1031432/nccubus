@@ -94,6 +94,7 @@ function getData(mode){
                 else{
                     body = JSON.parse(body);
                     body = sortBusData(body);
+                    console.log(body);
                     let result = [data[mode].title,"--"];
                     for(var i=0;i<body.length;i++){
                         if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
