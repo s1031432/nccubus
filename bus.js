@@ -77,10 +77,9 @@ function GetAuthorizationHeader() {
 
 
 function getData(mode){
-    console.log(`getData(${mode});`)
+    console.log(`getData(${mode})`);
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
-
     return new Promise( resolve => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
@@ -206,6 +205,7 @@ bot.onText(/\/start$/, (msg) => {
 
 bot.on('message', async (msg) => {
     if(/^\//.test(msg.text)){
+        let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
             let replyMsg = "深夜時間，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
@@ -218,7 +218,7 @@ bot.on('message', async (msg) => {
         }
         try{
             bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
-            let replyMsg = await getData(msg, msg.text.substring(1));
+            let replyMsg = await getData(msg,mode);
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
         catch(e){
