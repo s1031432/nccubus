@@ -174,9 +174,9 @@ bot.onText(/\/start$/, (msg) => {
 bot.onText(/\/server$/, (msg) => {
     var replyMsg = [];
     replyMsg.push(`伺服器上次啟動時間`);
-    replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
+    replyMsg.push(`<code>${getDateTime.getDateTime(serverStartTime)}</code>\n`);
     replyMsg.push(`伺服器啟動後呼叫次數`);
-    replyMsg.push(`${serverCalledCount}\n`);
+    replyMsg.push(`<code>${serverCalledCount}</code>\n`);
     replyMsg = replyMsg.join("\n");
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
@@ -218,5 +218,5 @@ app.listen(process.env.PORT || 5000, async function () {
     for(var i=0;i<Object.keys(data).length;i++){
         await getData(Object.keys(data)[i]);
     }
-    console.log(`--${serverStartTime} Server is running...`);
+    console.log(`-- ${serverStartTime} Server is running...`);
 });
