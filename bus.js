@@ -173,26 +173,22 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg += "<b>⚠️注意</b>\n"
     replyMsg += "本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-    return;
 });
 bot.onText(/\/server$/, (msg) => {
     var replyMsg = [];
-    replyMsg.push(`伺服器時間`);
+    replyMsg.push(`伺服器上次啟動時間`);
     replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
     replyMsg.push(`伺服器啟動後呼叫次數`);
     replyMsg.push(`${serverCalledCount}\n`);
     replyMsg = replyMsg.join("\n");
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-    return;
 });
 bot.on('message', async (msg) => {
-
-    serverCalledCount += 1;
-    // if(/^\//.test(msg.text)){
-    if(msg.text == "/nccu1" || msg.text == "/xinguang" || msg.text == "/zoo_nccu1" || msg.text == "/nccu_zoo" || msg.text == "/nccu1_zoo"){
+    if( Object.keys(data).indexOf(msg.text) ){
+        serverCalledCount += 1;
         let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
-            let replyMsg = "深夜時間，到站時間停止更新。";
+            let replyMsg = "深夜時間(02:00~05:00)，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
             return;
