@@ -14,7 +14,7 @@ const bot = new telegramBot(token, {polling: true});
 // _1 -> The bus returns to the station
 
 
-data = require('./busdata.json');
+data = {};
 console.log("ddddd", data);
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
@@ -223,6 +223,7 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
+    data = require('./busdata.json');
     console.dir("data1", data);
     console.log(`--${serverStartTime} Server is running...`);
 });
