@@ -16,7 +16,6 @@ const bot = new telegramBot(token, {polling: true});
 
 
 data = initdata.initdata();
-console.dir(data);
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
 
@@ -167,7 +166,6 @@ function isStopUpdateInNight(){
     return false;
 }
 bot.onText(/\/start$/, (msg) => {
-    console.log(msg);
     var replyMsg = "";
     replyMsg += "<code><b><u>/zoo_nccu1</u></b></code>\n查看捷運動物園站到政大一站(校門口)公車到站時間。只會顯示有停靠政大一站的公車，有些公車(如295, 679)雖不停靠政大一站(校門口)，但會停靠新光路口，就不會被列出。\n\n";
     replyMsg += "<code><b><u>/nccu_zoo</u></b></code>\n查看政大站(麥側萊爾富)到捷運動物園站的公車到站時間。有些公車(如530)雖有停靠政大站(麥側萊爾富)，但不會停靠捷運動物園站，或是極度繞路(如棕11)，就不會被列出。\n\n";
@@ -180,7 +178,6 @@ bot.onText(/\/start$/, (msg) => {
     return;
 });
 bot.onText(/\/server$/, (msg) => {
-    console.log(msg);
     var replyMsg = [];
     replyMsg.push(`伺服器時間`);
     replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
@@ -191,6 +188,7 @@ bot.onText(/\/server$/, (msg) => {
     return;
 });
 bot.on('message', async (msg) => {
+    console.dir("data", data);
     serverCalledCount += 1;
     if(/^\//.test(msg.text)){
         let mode = msg.text.substring(1);
