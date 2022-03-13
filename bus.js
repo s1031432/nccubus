@@ -1,4 +1,4 @@
-// Telegram bot screenshot -> https://i.imgur.com/8spnWWB.jpg
+// Telegram bot screenshot -> https://i.imgur.com/ako16i7.jpg
 // Add me on Telegram      -> https://t.me/NCCU_bot
 
 const jsSHA = require('jssha');
