@@ -76,7 +76,7 @@ function GetAuthorizationHeader() {
 }
 
 
-function getData(mode){
+function getData(msg, mode){
     console.log(`getData(${mode});`)
 
     if( isStopUpdateInNight() ){
@@ -216,7 +216,7 @@ bot.onText(/\/start$/, (msg) => {
 
 bot.on('message', async (msg) => {
     if(/^\//.test(msg.text)){
-        let replyMsg = await getData(msg.text.substring(1));
+        let replyMsg = await getData(msg, msg.text.substring(1));
         try{
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
