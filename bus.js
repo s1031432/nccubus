@@ -223,7 +223,7 @@ bot.on('message', async (msg) => {
         }
         catch(e){
             console.log(e);
-            bot.sendMessage(msg.chat.id, `Error command ==`, {parse_mode: 'HTML'});
+            bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`, {parse_mode: 'HTML'});
         }
     }
     else{
