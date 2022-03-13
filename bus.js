@@ -16,6 +16,7 @@ const bot = new telegramBot(token, {polling: true});
 
 
 data = initdata.initdata();
+console.dir(data);
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
 
