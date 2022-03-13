@@ -76,18 +76,8 @@ function GetAuthorizationHeader() {
 }
 
 
-function getData(msg, mode){
+function getData(mode){
     console.log(`getData(${mode});`)
-
-    if( isStopUpdateInNight() ){
-        console.log("isStop");
-        return data[mode].str;
-    }
-    if( data[mode].str.length > 0 && isDataUpdated(mode) ){
-        console.log(`${mode} data is fresh.`);
-        return data[mode].str;
-    }
-    bot.sendMessage(msg.chat.id, "取得資料中...", {parse_mode: 'HTML'});
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
 
@@ -216,6 +206,16 @@ bot.onText(/\/start$/, (msg) => {
 
 bot.on('message', async (msg) => {
     if(/^\//.test(msg.text)){
+        if(isStopUpdateInNight()){
+            let replyMsg = "深夜時間，到站時間停止更新。";
+            bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+            bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
+            return;
+        }
+        if(isDataUpdated(msg.text.substring(1))){
+            bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
+            return;
+        }
         let replyMsg = await getData(msg, msg.text.substring(1));
         try{
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
