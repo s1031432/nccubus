@@ -27,6 +27,34 @@ function GetAuthorizationHeader() {
     return { 'Authorization': Authorization, 'X-Date': GMTString ,'Accept-Encoding': 'gzip'}; 
 }
 
+function getNewTaipeiData(mode, body){
+    console.log(`getNewTaipeiData(${mode})`);
+    return new Promise( resolve => { 
+        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
+            headers: GetAuthorizationHeader(),
+            gzip: true,
+            json: true,
+            timeout: 1200,
+        }, function(error, response, ntbody){
+            try{
+                if(error){
+                    console.log("-- ERROR: ", mode);
+                    getData(mode);
+                }
+                else{
+                    for(let i=0;i<ntbody.length;i++){
+                        body.push(ntbody[i]);
+                    }
+                    resolve(body);
+                }
+            }
+            catch(e){
+                console.log(e);
+            }
+        });
+    });
+}
+
 function getData(mode){
     console.log(`getData(${mode})`);
     // Call ptx API to get bus data(json)
@@ -35,6 +63,7 @@ function getData(mode){
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
+            json: true,
             timeout: 1500,
         }, function(error, response, body){
             try{
@@ -43,7 +72,7 @@ function getData(mode){
                     getData(mode);
                 }
                 else{
-                    body = JSON.parse(body);
+                    body = await getNewTaipeiData(mode, body)
                     body = sortBusData(body);
                     // console.log(body);
                     let result = [data[mode].title,"--"];
