@@ -5,7 +5,7 @@ const jsSHA = require('jssha');
 const request = require('request');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
-const initdata = require("./busdata.js");
+
 const telegramBot = require('node-telegram-bot-api');
 // fill in your telegram token
 const token = process.env.telegramtoken;
@@ -223,6 +223,7 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
+    const initdata = require("./busdata.js");
     console.dir("data1", data);
     data = initdata.initdata();
     console.dir("data2", data);
