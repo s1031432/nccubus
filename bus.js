@@ -27,7 +27,6 @@ function GetAuthorizationHeader() {
     return { 'Authorization': Authorization, 'X-Date': GMTString ,'Accept-Encoding': 'gzip'}; 
 }
 
-
 function getData(mode){
     console.log(`getData(${mode})`);
     // Call ptx API to get bus data(json)
@@ -61,7 +60,7 @@ function getData(mode){
                             }
                             else if(body[i].StopStatus == 1){
                                 if(body[i].EstimateTime >= 30){
-                                    str = body[i].EstimateTime < 120 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分（尚未發車）`;
+                                    str = body[i].EstimateTime < 120 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分(尚未發車)`;
                                 }
                                 else if(body[i].EstimateTime < 30){
                                     str = `✅ ${str} - 進站中`
@@ -91,7 +90,7 @@ function getData(mode){
                     result.push(`--`);
                     result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</pre>`);
                     console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`)
-                    // update each bus data string
+                    // update each bus data content
                     data[mode].str = result.join("\n");
                     resolve(data[mode].str);
                 }
@@ -211,10 +210,9 @@ bot.on('message', async (msg) => {
     }
 });
 
-var app = express();
-var packageInfo = require('./package.json');
+const app = express();
 app.get('/', function (req, res) {
-    res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
+    res.location("https://t.me/NCCU_bot");
 });
 app.listen(process.env.PORT || 5000, async function () {
     for(var i=0;i<Object.keys(data).length;i++){
