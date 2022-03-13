@@ -220,7 +220,7 @@ bot.onText(/\/start$/, (msg) => {
 bot.on('message', (msg) => {
     if(/^\//.test(msg.text)){
         try{
-            bot.sendMessage(msg.chat.id, getData(msg.text.substring(1)), {parse_mode: 'HTML'});
+            bot.sendMessage(msg.chat.id, await getData(msg.text.substring(1)), {parse_mode: 'HTML'});
         }
         catch(e){
             console.log(e);
