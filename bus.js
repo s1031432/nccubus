@@ -91,63 +91,65 @@ function getData(mode){
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
 
-    request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
-        headers: GetAuthorizationHeader(),
-        gzip: true,
-        timeout: 2500,
-    }, function(error, response, body){
-        try{
-            if(error){
-                console.log("-- ERROR: ", mode);
-                getData(mode);
-            }
-            else{
-                body = JSON.parse(body);
-                body = sortBusData(body);
-                let result = [data[mode].title,"--"];
-                for(var i=0;i<body.length;i++){
-                    if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
-                        str = `${body[i].RouteName.Zh_tw}`;
-                        if(body[i].StopStatus == 0){
-                            str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
-                        }
-                        else if(body[i].StopStatus == 1){
-                            if(body[i].EstimateTime){
-                                str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分（尚未發車）`;
-                            }
-                            else if(body[i].EstimateTime == undefined){
-                                str = `💤 ${str} - 尚未發車`;
-                            }
-                        }
-                        else if(body[i].StopStatus == 2){
-                            str = `⚠️ ${str} - 交管不停靠`;
-                        }
-                        else if(body[i].StopStatus == 3){
-                            str = `❌ ${str} - 末班車已過`;
-                        }
-                        else if(body[i].StopStatus == 4){
-                            str = `❌ ${str} - 今日未營運`;
-                        }
-                        if(body[i].IsLastBus){
-                            str += ` 🔴末班車！`;
-                        }
-                        result.push(str);
-                    }
+    return new Promise( resolve => { 
+        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
+            headers: GetAuthorizationHeader(),
+            gzip: true,
+            timeout: 2500,
+        }, function(error, response, body){
+            try{
+                if(error){
+                    console.log("-- ERROR: ", mode);
+                    getData(mode);
                 }
-                let nowMs = (+new Date())+8*60*60*1000;
-                // update each bus data lastUpdateTime
-                data[mode].lastUpdateTimeMs = nowMs;
-                result.push(`--`);
-                result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</pre>`);
-                console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`)
-                // update each bus data string
-                data[mode].str = result.join("\n");
-                return data[mode].str;
+                else{
+                    body = JSON.parse(body);
+                    body = sortBusData(body);
+                    let result = [data[mode].title,"--"];
+                    for(var i=0;i<body.length;i++){
+                        if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
+                            str = `${body[i].RouteName.Zh_tw}`;
+                            if(body[i].StopStatus == 0){
+                                str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
+                            }
+                            else if(body[i].StopStatus == 1){
+                                if(body[i].EstimateTime){
+                                    str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分（尚未發車）`;
+                                }
+                                else if(body[i].EstimateTime == undefined){
+                                    str = `💤 ${str} - 尚未發車`;
+                                }
+                            }
+                            else if(body[i].StopStatus == 2){
+                                str = `⚠️ ${str} - 交管不停靠`;
+                            }
+                            else if(body[i].StopStatus == 3){
+                                str = `❌ ${str} - 末班車已過`;
+                            }
+                            else if(body[i].StopStatus == 4){
+                                str = `❌ ${str} - 今日未營運`;
+                            }
+                            if(body[i].IsLastBus){
+                                str += ` 🔴末班車！`;
+                            }
+                            result.push(str);
+                        }
+                    }
+                    let nowMs = (+new Date())+8*60*60*1000;
+                    // update each bus data lastUpdateTime
+                    data[mode].lastUpdateTimeMs = nowMs;
+                    result.push(`--`);
+                    result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</pre>`);
+                    console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`)
+                    // update each bus data string
+                    data[mode].str = result.join("\n");
+                    resolve(data[mode].str);
+                }
             }
-        }
-        catch(e){
-            console.log(e);
-        }
+            catch(e){
+                console.log(e);
+            }
+        });
     });
 }
 function sortBusData(body){
@@ -237,5 +239,5 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version });
 });
 app.listen(process.env.PORT || 5000, function () {
-    console.log(`${getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000))}Server is running...`);
+    console.log(`--${getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000))} Server is running...`);
 });
