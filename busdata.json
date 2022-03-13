@@ -45,8 +45,8 @@
             ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6"],
             ["933", "G1"]
         ],
-        "title" : "<pre>➡️ 新光路口(龍角前)",
-        "str" : "<pre>➡️ 政大一(校門前)",
+        "title" : "<pre>➡️ 政大一站(校門前)",
+        "str" : "",
         "lastUpdateTimeMs" : 0
     }
 }
