@@ -15,7 +15,7 @@ const bot = new telegramBot(token, {polling: true});
 // _1 -> The bus returns to the station
 
 
-data = initdata.initdata();
+data = {};
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
 
