@@ -23,7 +23,7 @@ data.zoo_nccu1.whiteList = [];
 data.zoo_nccu1.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "282", "66", "676", "611"];
 data.zoo_nccu1.whiteList[1] = ["G1", "BR18", "933"];
 data.zoo_nccu1.str = "<pre>➡️ 動物園站(往政大)";
-data.zoo_nccu1.lastUpdateTime = getNowTime();
+data.zoo_nccu1.lastUpdateTimeMs = (+new Date())+8*60*60*1000
 
 // 政大站(麥側萊爾富) 往 動物園站
 data.nccu_zoo.stationID = 2415;
@@ -31,7 +31,7 @@ data.nccu_zoo.whiteList = [];
 data.nccu_zoo.whiteList[0] = ["933", "BR18", "G1"];
 data.nccu_zoo.whiteList[1] = ["236Shuttle", "282", "295", "295Sub", "611", "66", "679", "BR6", "Roosevelt Rd. Metro Bus"];
 data.nccu_zoo.str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
-data.nccu_zoo.lastUpdateTime = getNowTime();
+data.nccu_zoo.lastUpdateTimeMs = (+new Date())+8*60*60*1000
 
 // 政大一站(Jason前) 往 動物園站
 data.nccu1_zoo.stationID = 1001400;
@@ -39,7 +39,7 @@ data.nccu1_zoo.whiteList = [];
 data.nccu1_zoo.whiteList[0] = ["933", "G1"];
 data.nccu1_zoo.whiteList[1] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "66"];
 data.nccu1_zoo.str = "<pre>➡️ 政大一站(Jason對面往動物園)";
-data.nccu1_zoo.lastUpdateTime = getNowTime();
+data.nccu1_zoo.lastUpdateTimeMs = (+new Date())+8*60*60*1000
 
 // 新光路口站的所有公車
 data.xinguang.stationID = 1000854;
@@ -47,7 +47,7 @@ data.xinguang.whiteList = [];
 data.xinguang.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "282", "295", "295Sub", "530", "611", "66", "676", "679", "BR11", "BR11Sub", "BR3", "BR6"];
 data.xinguang.whiteList[1] = ["933", "S10", "S10Shuttle", "BR5", "G1"];
 data.xinguang.str = "<pre>➡️ 新光路口(龍角前)";
-data.xinguang.lastUpdateTime = getNowTime();
+data.xinguang.lastUpdateTimeMs = (+new Date())+8*60*60*1000
 
 // 政大一(校門前)的所有公車
 data.nccu1.stationID = 1001409;
@@ -55,7 +55,7 @@ data.nccu1.whiteList = [];
 data.nccu1.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6"];
 data.nccu1.whiteList[1] = ["933", "G1"];
 data.nccu1.str = "<pre>➡️ 政大一(校門前)";
-data.nccu1.lastUpdateTime = getNowTime();
+data.nccu1.lastUpdateTimeMs = (+new Date())+8*60*60*1000
 
 function GetAuthorizationHeader() {
     // Get AppID & AppKey: https://ptx.transportdata.tw/PTX/
@@ -73,14 +73,16 @@ function GetAuthorizationHeader() {
 
 function getData(mode){
     console.log(`getData(${mode});`)
-    let now = getDateTime.getDateTime(getNowTime());
-    let hours = now[11]+now[12];
 
-    // 02:00 ~ 05:00 don't call api
-    if((Number(hours) < 5 && Number(hours) > 1) )
-        return 0;
-    
-
+    if( isStopUpdateInNight() ){
+        console.log("isStop");
+        return data[mode].str;
+    }
+    if( isDataUpdated(mode) ){
+        console.log("Updated");
+        return data[mode].str;
+    }
+    console.log("AAA")
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
 
@@ -128,17 +130,19 @@ function getData(mode){
                     }
                 }
                 let nowMs = (+new Date())+8*60*60*1000;
+                // update each bus data lastUpdateTime
+                data[mode].lastUpdateTimeMs = nowMs;
                 result.push(`--`);
-                result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
-                console.log(`${mode} data update`)
-                // update each bus data(string)
+                result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</pre>`);
+                console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`)
+                // update each bus data string
                 data[mode].str = result.join("\n");
+                return data[mode].str;
             }
         }
         catch(e){
             console.log(e);
         }
-        return;
     });
 }
 function sortBusData(body){
@@ -175,8 +179,20 @@ function sortBusData(body){
     }
     return body;
 }
-function getNowTime(){
-    return new Date((+new Date())+8*60*60*1000);
+function isDataUpdated(mode){
+    // check data is fresh
+    let nowMs = (+new Date())+8*60*60*1000;
+    if( nowMs - data[mode].lastUpdateTimeMs >= 25*1000 )
+        return false;
+    return true;
+}
+function isStopUpdateInNight(){
+    // 02:00 ~ 05:00 don't call api
+    let now = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
+    let hours = now[11]+now[12];
+    if((Number(hours) < 5 && Number(hours) > 1) )
+        return true;
+    return false;
 }
 bot.onText(/\/start$/, (msg) => {
     console.log(msg);
@@ -209,14 +225,6 @@ bot.on('message', (msg) => {
     }
 });
 
-async function main(){
-    getData("zoo_nccu1");
-    getData("nccu_zoo");
-    getData("nccu1_zoo");
-    getData("xinguang");
-    getData("nccu1");
-    setTimeout(main, 25000)
-}
 
 var app = express();
 var packageInfo = require('./package.json');
@@ -225,5 +233,4 @@ app.get('/', function (req, res) {
 });
 app.listen(process.env.PORT || 5000, function () {
     console.log('Server is running...');
-    main();
 });
