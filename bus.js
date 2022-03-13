@@ -177,16 +177,16 @@ bot.onText(/\/start$/, (msg) => {
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
     return;
 });
-bot.onText(/\/server$/, (msg) => {
-    var replyMsg = [];
-    replyMsg.push(`伺服器時間`);
-    replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
-    replyMsg.push(`伺服器啟動後呼叫次數`);
-    replyMsg.push(`${serverCalledCount}\n`);
-    replyMsg = replyMsg.join("\n");
-    bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-    return;
-});
+// bot.onText(/\/server$/, (msg) => {
+//     var replyMsg = [];
+//     replyMsg.push(`伺服器時間`);
+//     replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
+//     replyMsg.push(`伺服器啟動後呼叫次數`);
+//     replyMsg.push(`${serverCalledCount}\n`);
+//     replyMsg = replyMsg.join("\n");
+//     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+//     return;
+// });
 bot.on('message', async (msg) => {
 
     serverCalledCount += 1;
