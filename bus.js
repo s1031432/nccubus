@@ -103,7 +103,7 @@ function getData(mode){
                                 str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
                             }
                             else if(body[i].StopStatus == 1){
-                                if(body[i].EstimateTime){
+                                if(body[i].EstimateTime > -1){
                                     str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分（尚未發車）`;
                                 }
                                 else if(body[i].EstimateTime == undefined){
