@@ -153,8 +153,10 @@ function isStopUpdateInNight(){
     // 02:00 ~ 05:00 don't call api
     let now = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
     let hours = now[11]+now[12];
-    if((Number(hours) < 5 && Number(hours) > 1) )
+    if((Number(hours) < 23 && Number(hours) > 1) ){
+        console.log("Not update time")
         return true;
+    }
     return false;
 }
 bot.onText(/\/start$/, (msg) => {
@@ -164,8 +166,10 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg += "<code><b><u>/nccu1_zoo</u></b></code>\n查看政大一站(Jason超市對面)到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車(如530)雖有停靠政大一站(Jason超市對面)，但不會停靠捷運動物園站，就不會被列出。\n\n";
     replyMsg += "<code><b><u>/xinguang</u></b></code>\n查看停靠新光路口站的<b>所有公車</b>到站時間。\n\n";
     replyMsg += "<code><b><u>/nccu1</u></b></code>\n查看政大一站(校門口)的<b>所有公車</b>到站時間。\n\n";
-    replyMsg += "<b>⚠️注意</b>\n"
-    replyMsg += "本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
+    replyMsg += "<b>⚠️ 注意</b>\n"
+    replyMsg += "本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。\n\n";
+    replyMsg += "📎 專案Github\n"
+    replyMsg += "https://github.com/s1031432/nccubus"
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
 bot.onText(/\/server$/, (msg) => {
