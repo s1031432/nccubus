@@ -30,7 +30,7 @@ function GetAuthorizationHeader() {
 function getNewTaipeiData(mode, body){
     console.log(`getNewTaipeiData(${mode})`);
     return new Promise( resolve => { 
-        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
+        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
@@ -64,7 +64,7 @@ function getData(mode){
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 1500,
+            timeout: 1200,
         }, async function(error, response, body){
             try{
                 if(error){
@@ -72,7 +72,8 @@ function getData(mode){
                     getData(mode);
                 }
                 else{
-                    body = await getNewTaipeiData(mode, body)
+                    // for 933
+                    body = await getNewTaipeiData(mode, body);
                     body = sortBusData(body);
                     // console.log(body);
                     let result = [data[mode].title,"--"];
