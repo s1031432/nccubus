@@ -218,6 +218,6 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
-    data = initdata.init();
+    data = initdata.initdata();
     console.log(`--${serverStartTime} Server is running...`);
 });
