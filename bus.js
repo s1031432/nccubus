@@ -100,7 +100,12 @@ function getData(mode){
                         if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
                             str = `${body[i].RouteName.Zh_tw}`;
                             if(body[i].StopStatus == 0){
-                                str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
+                                if(body[i].EstimateTime >= 30){
+                                    str = body[i].EstimateTime < 120 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
+                                }
+                                else if(body[i].EstimateTime < 30){
+                                    str = `✅ ${str} - 進站中`;
+                                }
                             }
                             else if(body[i].StopStatus == 1){
                                 if(body[i].EstimateTime >= 30){
