@@ -15,7 +15,7 @@ const bot = new telegramBot(token, {polling: true});
 
 
 
-data = {};
+data = {"zoo_nccu1":{}, "nccu_zoo":{}, "nccu1_zoo":{}, "xinguang":{}, "nccu1":{}};
 // 捷運動物園站 往 政大一站
 data.zoo_nccu1.stationID = 2442;
 data.zoo_nccu1.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "282", "66", "676", "611"];
@@ -27,7 +27,7 @@ data.nccu_zoo.whiteList[0] = ["933", "BR18", "G1"];
 data.nccu_zoo.whiteList[1] = ["236Shuttle", "282", "295", "295Sub", "611", "66", "679", "BR6", "Roosevelt Rd. Metro Bus"];
 data.nccu_zoo.str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
 // 政大一站(Jason前) 往 動物園站
-data.nccu_zoo.stationID = 1001400;
+data.nccu1_zoo.stationID = 1001400;
 data.nccu1_zoo.whiteList[0] = ["933", "G1"];
 data.nccu1_zoo.whiteList[1] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "66"];
 data.nccu1_zoo.str = "<pre>➡️ 政大一站(Jason對面往動物園)";
