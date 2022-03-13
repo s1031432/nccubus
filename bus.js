@@ -153,7 +153,7 @@ function isStopUpdateInNight(){
     // 02:00 ~ 05:00 don't call api
     let now = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
     let hours = now[11]+now[12];
-    if((Number(hours) < 23 && Number(hours) > 1) ){
+    if((Number(hours) < 5 && Number(hours) > 1) ){
         return true;
     }
     return false;
