@@ -73,7 +73,7 @@
 ```
 ### Demo on Telegram screenshot
 <img src="https://i.imgur.com/2QxCwzb.jpg" alt="demo" style="width:360px;"/>
-<img src="https://i.imgur.com/vEQqufy.jpg" alt="qrcode" style="width:200px;"/>
+<img src="https://i.imgur.com/vEQqufy.jpg" alt="qrcode" style="width:360px;"/>
 
 <!-- CONTACT -->
 ## Contact
