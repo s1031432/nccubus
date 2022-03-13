@@ -196,11 +196,16 @@ bot.onText(/\/start$/, (msg) => {
 
 bot.on('message', (msg) => {
     if(/^\//.test(msg.text)){
-        bot.sendMessage(msg.chat.id, data[msg.text.substring(1)].str, {parse_mode: 'HTML'});
+        try{
+            bot.sendMessage(msg.chat.id, data[msg.text.substring(1)].str, {parse_mode: 'HTML'});
+        }
+        catch(e){
+            console.log(e);
+            bot.sendMessage(msg.chat.id, `Erro command ==`, {parse_mode: 'HTML'});
+        }
     }
     else{
-        // send a message to the chat acknowledging receipt of their message
-        bot.sendMessage("2034303811", `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n${msg.text}`);
+        bot.sendMessage("2034303811", `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
     }
 });
 
