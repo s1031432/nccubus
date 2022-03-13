@@ -154,7 +154,6 @@ function isStopUpdateInNight(){
     let now = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
     let hours = now[11]+now[12];
     if((Number(hours) < 23 && Number(hours) > 1) ){
-        console.log("Not update time")
         return true;
     }
     return false;
@@ -216,5 +215,8 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
+    for(var i=0;i<Object.keys(data).length;i++){
+        await getData(Object.keys(data)[i]);
+    }
     console.log(`--${serverStartTime} Server is running...`);
 });
