@@ -206,7 +206,6 @@ bot.onText(/\/start$/, (msg) => {
 bot.on('message', async (msg) => {
     if(/^\//.test(msg.text)){
         let mode = msg.text.substring(1);
-        console.log("mode", mode);
         if(isStopUpdateInNight()){
             let replyMsg = "深夜時間，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
@@ -219,7 +218,7 @@ bot.on('message', async (msg) => {
         }
         try{
             bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
-            let replyMsg = await getData(msg, mode);
+            let replyMsg = await getData(mode);
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
         catch(e){
