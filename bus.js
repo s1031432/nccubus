@@ -83,7 +83,7 @@ function getData(mode){
         console.log("isStop");
         return data[mode].str;
     }
-    if( isDataUpdated(mode) ){
+    if( data[mode].str.length > 0 && isDataUpdated(mode) ){
         console.log(`${mode} data is fresh.`);
         return data[mode].str;
     }
