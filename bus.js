@@ -219,12 +219,13 @@ bot.onText(/\/start$/, (msg) => {
 
 bot.on('message', (msg) => {
     if(/^\//.test(msg.text)){
+        let replyMsg = await getData(msg.text.substring(1));
         try{
-            bot.sendMessage(msg.chat.id, await getData(msg.text.substring(1)), {parse_mode: 'HTML'});
+            bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
         catch(e){
             console.log(e);
-            bot.sendMessage(msg.chat.id, `Erro command ==`, {parse_mode: 'HTML'});
+            bot.sendMessage(msg.chat.id, `Error command ==`, {parse_mode: 'HTML'});
         }
     }
     else{
