@@ -15,6 +15,7 @@ const bot = new telegramBot(token, {polling: true});
 
 
 data = require('./busdata.json');
+console.log("ddddd", data);
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
 
@@ -223,7 +224,5 @@ app.get('/', function (req, res) {
 });
 app.listen(process.env.PORT || 5000, function () {
     console.dir("data1", data);
-    data = initdata.initdata();
-    console.dir("data2", data);
     console.log(`--${serverStartTime} Server is running...`);
 });
