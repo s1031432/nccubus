@@ -1,4 +1,4 @@
-function init(){
+function initdata(){
     data = {"zoo_nccu1":{}, "nccu_zoo":{}, "nccu1_zoo":{}, "xinguang":{}, "nccu1":{}};
     // 捷運動物園站 往 政大一站
     data.zoo_nccu1.stationID = 2442;
