@@ -179,9 +179,9 @@ bot.onText(/\/server$/, (msg) => {
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
 bot.on('message', async (msg) => {
-    if( Object.keys(data).indexOf(msg.text.substring(1)) > -1 ){
+    let mode = msg.text.substring(1);
+    if( Object.keys(data).indexOf(mode) > -1 ){
         serverCalledCount += 1;
-        let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
             let replyMsg = "深夜時間(02:00~05:00)，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
@@ -202,7 +202,7 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`, {parse_mode: 'HTML'});
         }
     }
-    else if(msg.text != "/server" || msg.text != "/start"){
+    else if( !(msg.text != "/server" || msg.text != "/start") ){
         bot.sendMessage(process.env.adminID, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
     }
 });
