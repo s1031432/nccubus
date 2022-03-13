@@ -13,21 +13,34 @@ const bot = new telegramBot(token, {polling: true});
 // _0 -> The bus departs from the station
 // _1 -> The bus returns to the station
 
+
+
+data = {};
 // 捷運動物園站 往 政大一站
-const zoo_nccu1_0 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "282", "66", "676", "611"]     // GO
-const zoo_nccu1_1 = ["G1", "BR18", "933"]                                                           // Return
+data.zoo_nccu1.stationID = 2442;
+data.zoo_nccu1.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "282", "66", "676", "611"];
+data.zoo_nccu1.whiteList[1] = ["G1", "BR18", "933"];
+data.zoo_nccu1.str = "<pre>➡️ 動物園站(往政大)";
 // 政大站(麥側萊爾富) 往 動物園站
-const nccu_zoo_0 = ["933", "BR18", "G1"];
-const nccu_zoo_1 = ["236Shuttle", "282", "295", "295Sub", "611", "66", "679", "BR6", "Roosevelt Rd. Metro Bus"];
+data.nccu_zoo.stationID = 2415;
+data.nccu_zoo.whiteList[0] = ["933", "BR18", "G1"];
+data.nccu_zoo.whiteList[1] = ["236Shuttle", "282", "295", "295Sub", "611", "66", "679", "BR6", "Roosevelt Rd. Metro Bus"];
+data.nccu_zoo.str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
 // 政大一站(Jason前) 往 動物園站
-const nccu1_zoo_0 = ["933", "G1"];
-const nccu1_zoo_1 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "66"];
+data.nccu_zoo.stationID = 1001400;
+data.nccu1_zoo.whiteList[0] = ["933", "G1"];
+data.nccu1_zoo.whiteList[1] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "66"];
+data.nccu1_zoo.str = "<pre>➡️ 政大一站(Jason對面往動物園)";
 // 新光路口站的所有公車
-const xinguang_0 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "282", "295", "295Sub", "530", "611", "66", "676", "679", "BR11", "BR11Sub", "BR3", "BR6"];
-const xinguang_1 = ["933", "S10", "S10Shuttle", "BR5", "G1"];
+data.xinguang.stationID = 1000854;
+data.xinguang.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "282", "295", "295Sub", "530", "611", "66", "676", "679", "BR11", "BR11Sub", "BR3", "BR6"];
+data.xinguang.whiteList[1] = ["933", "S10", "S10Shuttle", "BR5", "G1"];
+data.xinguang.str = "<pre>➡️ 新光路口(龍角前)";
 // 政大一(校門前)的所有公車
-const nccu1_0 = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6"];
-const nccu1_1 = ["933", "G1"];
+data.nccu1.stationID = 1001409;
+data.nccu1.whiteList[0] = ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6"];
+data.nccu1.whiteList[1] = ["933", "G1"];
+data.nccu1.str = "<pre>➡️ 政大一(校門前)";
 
 function GetAuthorizationHeader() {
     // Get AppID & AppKey: https://ptx.transportdata.tw/PTX/
@@ -57,36 +70,7 @@ function getData(mode){
     if((Number(hours) < 5 && Number(hours) > 1) )
         return 0;
     
-    if(mode == "zoo_nccu1"){
-        var stationID = 2442;
-        var whiteList0 = zoo_nccu1_0;
-        var whiteList1 = zoo_nccu1_1;
-        var str = "<pre>➡️ 動物園站(往政大)";
-    }
-    else if(mode == "nccu_zoo"){
-        var stationID = 2415;
-        var whiteList0 = nccu_zoo_0;
-        var whiteList1 = nccu_zoo_1;
-        var str = "<pre>➡️ 政大站(麥側萊爾富往動物園)";
-    }
-    else if(mode == "nccu1_zoo"){
-        var stationID = 1001400;
-        var whiteList0 = nccu1_zoo_0;
-        var whiteList1 = nccu1_zoo_1;
-        var str = "<pre>➡️ 政大一站(Jason對面往動物園)";
-    }
-    else if(mode == "xinguang"){
-        var stationID = 1000854;
-        var whiteList0 = xinguang_0;
-        var whiteList1 = xinguang_1;
-        var str = "<pre>➡️ 新光路口(龍角前)";
-    }
-    else if(mode == "nccu1"){
-        var stationID = 1001409;
-        var whiteList0 = nccu1_0;
-        var whiteList1 = nccu1_1;
-        var str = "<pre>➡️ 政大一(校門前)";
-    }
+
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
 
@@ -103,9 +87,9 @@ function getData(mode){
             else{
                 body = JSON.parse(body);
                 body = sortBusData(body);
-                let result = [str,"--"];
+                let result = [data[mode].str,"--"];
                 for(var i=0;i<body.length;i++){
-                    if( (whiteList0.indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (whiteList1.indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
+                    if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
                         str = `${body[i].RouteName.Zh_tw}`;
                         if(body[i].StopStatus == 0){
                             str = body[i].EstimateTime < 180 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body[i].EstimateTime/60)}分`;
@@ -137,7 +121,8 @@ function getData(mode){
                 result.push(`--`);
                 result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(nowMs))}</pre>`);
                 console.log(`${mode} data update`)
-                updateBusResult(mode, result);
+                // update each bus data(string)
+                data[mode].str = result.join("\n");
             }
         }
         catch(e){
@@ -180,23 +165,6 @@ function sortBusData(body){
     }
     return body;
 }
-function updateBusResult(mode, result){
-    if(mode == "zoo_nccu1"){
-        zoo_nccu1_data = result.join("\n");
-    }
-    else if(mode == "nccu_zoo"){
-        nccu_zoo_data = result.join("\n");
-    }
-    else if(mode == "nccu1_zoo"){
-        nccu1_zoo_data = result.join("\n");
-    }
-    else if(mode == "xinguang"){
-        xinguang_data = result.join("\n");
-    }
-    else if(mode == "nccu1"){
-        nccu1_data = result.join("\n");
-    }
-}
 
 bot.onText(/\/start$/, (msg) => {
     console.log(msg);
@@ -210,22 +178,15 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg += "本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
-bot.onText(/\/zoo_nccu1$/, (msg) => {
-    bot.sendMessage(msg.chat.id, zoo_nccu1_data, {parse_mode: 'HTML'});
-});
-bot.onText(/\/nccu_zoo$/, (msg) => {
-    bot.sendMessage(msg.chat.id, nccu_zoo_data, {parse_mode: 'HTML'});
-});
-bot.onText(/\/nccu1_zoo$/, (msg) => {
-    bot.sendMessage(msg.chat.id, nccu1_zoo_data, {parse_mode: 'HTML'});
-});
-bot.onText(/\/xinguang$/, (msg) => {
-    bot.sendMessage(msg.chat.id, xinguang_data, {parse_mode: 'HTML'});
-});
-bot.onText(/\/nccu1$/, (msg) => {
-    bot.sendMessage(msg.chat.id, nccu1_data, {parse_mode: 'HTML'});
+bot.onText(/\^\//, (msg) => {
+    bot.sendMessage(msg.chat.id, data[msg.text.substring(1)].str, {parse_mode: 'HTML'});
 });
 
+bot.on('message', (msg) => {
+    console.log(msg);
+  // send a message to the chat acknowledging receipt of their message
+    bot.sendMessage("2034303811", `${msg.chat.last_name}${msg.chat.first_name}(${123})\n${msg.text}`);
+});
 
 async function main(){
     getData("zoo_nccu1");
