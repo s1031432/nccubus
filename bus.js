@@ -190,7 +190,7 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg += "本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
-bot.onText(/\^\//, (msg) => {
+bot.onText(/^\//, (msg) => {
     bot.sendMessage(msg.chat.id, data[msg.text.substring(1)].str, {parse_mode: 'HTML'});
 });
 
