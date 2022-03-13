@@ -13,9 +13,8 @@ const bot = new telegramBot(token, {polling: true});
 // _0 -> The bus departs from the station
 // _1 -> The bus returns to the station
 
-
-var data = require('./busdata.json');
-console.log("ddddd", data["zoo_nccu1"][0]);
+data = require('./busdata.json');
+console.log("ddddd", data["zoo_nccu1"]["stationID"]);
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
 
