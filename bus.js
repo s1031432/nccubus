@@ -234,7 +234,7 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
             return;
         }
-        if(isDataUpdated(msg.text.substring(1))){
+        if(isDataUpdated(mode)){
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
             return;
         }
