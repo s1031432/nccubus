@@ -68,6 +68,7 @@
 [PTX API](https://ptx.transportdata.tw/PTX/)
 
 ### Run Telegram bot on local server or you can deploy to the Cloud
+#### don't forget to change Telegram Bot Token, PTX APPKEY & APPID
 ```sh
     git clone git@github.com:s1031432/nccubus.git
     cd nccubus
