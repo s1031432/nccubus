@@ -197,7 +197,7 @@ bot.onText(/^\//, (msg) => {
 bot.on('message', (msg) => {
     console.log(msg);
   // send a message to the chat acknowledging receipt of their message
-    bot.sendMessage("2034303811", `${msg.chat.last_name}${msg.chat.first_name}(${123})\n${msg.text}`);
+    bot.sendMessage("2034303811", `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n${msg.text}`);
 });
 
 async function main(){
