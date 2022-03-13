@@ -2,3 +2,4 @@ node_modules
 secret.json
 heroku.bat
 github.bat
+bus.txt
