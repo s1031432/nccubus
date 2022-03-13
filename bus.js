@@ -46,7 +46,7 @@ function getData(mode){
                 else{
                     body = JSON.parse(body);
                     body = sortBusData(body);
-                    console.log(body);
+                    // console.log(body);
                     let result = [data[mode].title,"--"];
                     for(var i=0;i<body.length;i++){
                         if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)){
@@ -137,7 +137,6 @@ function sortBusData(body){
     return body;
 }
 function isDataUpdated(mode){
-    console.log("mode....", mode);
     // check data is fresh
     let nowMs = (+new Date())+8*60*60*1000;
     try{
@@ -202,7 +201,7 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`, {parse_mode: 'HTML'});
         }
     }
-    else if( !(msg.text != "/server" || msg.text != "/start") ){
+    else if( !(msg.text == "/server" || msg.text == "/start") ){
         bot.sendMessage(process.env.adminID, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
     }
 });
