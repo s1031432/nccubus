@@ -160,6 +160,8 @@ function isStopUpdateInNight(){
 }
 bot.onText(/\/start$/, (msg) => {
     var replyMsg = "";
+    replyMsg += "<code><b><u>/start</u></b></code>\n介紹。\n\n";
+    replyMsg += "<code><b><u>/server</u></b></code>\n查看伺服器狀況。\n\n";
     replyMsg += "<code><b><u>/zoo_nccu1</u></b></code>\n查看捷運動物園站到政大一站(校門口)公車到站時間。只會顯示有停靠政大一站的公車，有些公車(如295, 679)雖不停靠政大一站(校門口)，但會停靠新光路口，就不會被列出。\n\n";
     replyMsg += "<code><b><u>/nccu_zoo</u></b></code>\n查看政大站(麥側萊爾富)到捷運動物園站的公車到站時間。有些公車(如530)雖有停靠政大站(麥側萊爾富)，但不會停靠捷運動物園站，或是極度繞路(如棕11)，就不會被列出。\n\n";
     replyMsg += "<code><b><u>/nccu1_zoo</u></b></code>\n查看政大一站(Jason超市對面)到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車(如530)雖有停靠政大一站(Jason超市對面)，但不會停靠捷運動物園站，就不會被列出。\n\n";
