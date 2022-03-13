@@ -5,7 +5,6 @@ const jsSHA = require('jssha');
 const request = require('request');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
-const initdata = require("./busdata.js");
 const telegramBot = require('node-telegram-bot-api');
 // fill in your telegram token
 const token = process.env.telegramtoken;
