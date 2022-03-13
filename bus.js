@@ -14,7 +14,6 @@ const bot = new telegramBot(token, {polling: true});
 // _1 -> The bus returns to the station
 
 data = require('./busdata.json');
-console.log("ddddd", data["zoo_nccu1"]["stationID"]);
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
 
@@ -189,7 +188,8 @@ bot.onText(/\/server$/, (msg) => {
 bot.on('message', async (msg) => {
 
     serverCalledCount += 1;
-    if(/^\//.test(msg.text)){
+    // if(/^\//.test(msg.text)){
+    if(msg.text == "nccu1" || msg.text == "xinguang" || msg.text == "zoo_nccu1" || msg.text == "nccu_zoo" || msg.text == "nccu1_zoo")
         let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
             let replyMsg = "深夜時間，到站時間停止更新。";
@@ -222,7 +222,5 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
-    
-    console.dir("data1", data);
     console.log(`--${serverStartTime} Server is running...`);
 });
