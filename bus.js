@@ -14,7 +14,8 @@ const bot = new telegramBot(token, {polling: true});
 // _1 -> The bus returns to the station
 
 
-
+serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
+serverCalledCount = 0;
 data = {"zoo_nccu1":{}, "nccu_zoo":{}, "nccu1_zoo":{}, "xinguang":{}, "nccu1":{}};
 
 // 捷運動物園站 往 政大一站
@@ -210,9 +211,20 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg += "<b>⚠️注意</b>\n"
     replyMsg += "本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。";
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+    return;
 });
-
+bot.onText(/\/server$/, (msg) => {
+    console.log(msg);
+    var replyMsg = [];
+    replyMsg.push(`伺服器時間`);
+    replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
+    replyMsg.push(`伺服器啟動後呼叫次數`);
+    replyMsg.push(`${serverCalledCount}\n`);
+    bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+    return;
+});
 bot.on('message', async (msg) => {
+    serverCalledCount += 1;
     if(/^\//.test(msg.text)){
         let mode = msg.text.substring(1);
         if(isStopUpdateInNight()){
@@ -246,5 +258,5 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
-    console.log(`--${getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000))} Server is running...`);
+    console.log(`--${serverStartTime} Server is running...`);
 });
