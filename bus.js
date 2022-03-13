@@ -188,7 +188,7 @@ bot.onText(/\/server$/, (msg) => {
     return;
 });
 bot.on('message', async (msg) => {
-    console.dir("data", data);
+
     serverCalledCount += 1;
     if(/^\//.test(msg.text)){
         let mode = msg.text.substring(1);
@@ -223,5 +223,6 @@ app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
+    console.dir("data", data);
     console.log(`--${serverStartTime} Server is running...`);
 });
