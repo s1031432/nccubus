@@ -216,8 +216,9 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
             return;
         }
-        let replyMsg = await getData(msg, msg.text.substring(1));
         try{
+            bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
+            let replyMsg = await getData(msg, msg.text.substring(1));
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
         catch(e){
