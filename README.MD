@@ -69,6 +69,9 @@
 
 ### Run Telegram bot on local server or you can deploy to the Cloud
 ```sh
+    git clone git@github.com:s1031432/nccubus.git
+    cd nccubus
+    npm install
     npm start
 ```
 ### Demo on Telegram screenshot
