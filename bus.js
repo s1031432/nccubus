@@ -39,7 +39,7 @@ function getNewTaipeiData(mode, body){
             try{
                 if(error){
                     console.log("-- ERROR: ", mode);
-                    getData(mode);
+                    getNewTaipeiData(mode);
                 }
                 else{
                     for(let i=0;i<ntbody.length;i++){
@@ -54,7 +54,6 @@ function getNewTaipeiData(mode, body){
         });
     });
 }
-
 function getData(mode){
     console.log(`getData(${mode})`);
     // Call ptx API to get bus data(json)
@@ -168,15 +167,9 @@ function sortBusData(body){
 function isDataUpdated(mode){
     // check data is fresh
     let nowMs = (+new Date())+8*60*60*1000;
-    try{
-        if( nowMs - data[mode].lastUpdateTimeMs >= 25*1000 || data[mode].str.length < 1)
-            return false;
-        return true;
-    }
-    catch(e){
-        console.log(e);
-        return e;
-    }
+    if( nowMs - data[mode].lastUpdateTimeMs >= 30*1000 || data[mode].str.length < 1)
+        return false;
+    return true;
 }
 function isStopUpdateInNight(){
     // 02:00 ~ 05:00 don't call api
