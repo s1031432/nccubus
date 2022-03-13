@@ -214,7 +214,7 @@ var packageInfo = require('./package.json');
 app.get('/', function (req, res) {
     res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
-app.listen(process.env.PORT || 5000, function () {
+app.listen(process.env.PORT || 5000, async function () {
     for(var i=0;i<Object.keys(data).length;i++){
         await getData(Object.keys(data)[i]);
     }
