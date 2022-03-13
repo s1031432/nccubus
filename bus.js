@@ -220,6 +220,7 @@ bot.onText(/\/server$/, (msg) => {
     replyMsg.push(`${getDateTime.getDateTime(serverStartTime)}\n`);
     replyMsg.push(`伺服器啟動後呼叫次數`);
     replyMsg.push(`${serverCalledCount}\n`);
+    replyMsg = replyMsg.join("\n");
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
     return;
 });
