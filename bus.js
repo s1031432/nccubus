@@ -65,7 +65,7 @@ function getData(mode){
             gzip: true,
             json: true,
             timeout: 1500,
-        }, function(error, response, body){
+        }, async function(error, response, body){
             try{
                 if(error){
                     console.log("-- ERROR: ", mode);
