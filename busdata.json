@@ -1,0 +1,52 @@
+{
+    "zoo_nccu1":{
+        "stationID" : 2442,
+        "whiteList" : [
+            ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "282", "66", "676", "611"],
+            ["G1", "BR18", "933"]
+        ],
+        "title" : "<pre>➡️ 動物園站(往政大)",
+        "str" : "",
+        "lastUpdateTimeMs" : 0
+    }, 
+    "nccu_zoo":{
+        "stationID" : 2415,
+        "whiteList" : [
+            ["933", "BR18", "G1"],
+            ["236Shuttle", "282", "295", "295Sub", "611", "66", "679", "BR6", "Roosevelt Rd. Metro Bus"]
+        ],
+        "title" : "<pre>➡️ 政大站(麥側萊爾富往動物園)",
+        "str" : "",
+        "lastUpdateTimeMs" : 0
+    }, 
+    "nccu1_zoo":{
+        "stationID" : 1001400,
+        "whiteList" : [
+            ["933", "G1"],
+            ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "66"]
+        ],
+        "title" : "<pre>➡️ 政大一站(Jason對面往動物園)",
+        "str" : "",
+        "lastUpdateTimeMs" : 0
+    }, 
+    "xinguang":{
+        "stationID" : 1000854,
+        "whiteList" : [
+            ["Roosevelt Rd. Metro Bus", "236Shuttle", "282", "295", "295Sub", "530", "611", "66", "676", "679", "BR11", "BR11Sub", "BR3", "BR6"],
+            ["933", "S10", "S10Shuttle", "BR5", "G1"]
+        ],
+        "title" : "<pre>➡️ 新光路口(龍角前)",
+        "str" : "",
+        "lastUpdateTimeMs" : 0
+    }, 
+    "nccu1":{
+        "stationID" : 1001409,
+        "whiteList" : [
+            ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6"],
+            ["933", "G1"]
+        ],
+        "title" : "<pre>➡️ 新光路口(龍角前)",
+        "str" : "<pre>➡️ 政大一(校門前)",
+        "lastUpdateTimeMs" : 0
+    }
+}

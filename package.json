@@ -1,0 +1,20 @@
+{
+  "name": "nccubus",
+  "version": "1.0.0",
+  "description": "Common bus routes for NCCU",
+  "main": "bus.js",
+  "scripts": {
+    "start": "node bus.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nccu", "bus"
+  ],
+  "author": "Huang, Yi-Tang",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "jssha": "^3.2.0",
+    "node-telegram-bot-api": "^0.56.0"
+  }
+}
