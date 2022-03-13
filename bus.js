@@ -87,7 +87,7 @@ function getData(mode){
         console.log(`${mode} data is fresh.`);
         return data[mode].str;
     }
-    console.log("AAA")
+    bot.sendMessage(msg.chat.id, "取得資料中...", {parse_mode: 'HTML'});
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
 
@@ -95,7 +95,7 @@ function getData(mode){
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
-            timeout: 2500,
+            timeout: 1500,
         }, function(error, response, body){
             try{
                 if(error){
@@ -230,11 +230,10 @@ bot.on('message', async (msg) => {
     }
 });
 
-
 var app = express();
 var packageInfo = require('./package.json');
 app.get('/', function (req, res) {
-    res.json({ version: packageInfo.version });
+    res.json({ version: packageInfo.version, addme: "t.me/NCCU_bot" });
 });
 app.listen(process.env.PORT || 5000, function () {
     console.log(`--${getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000))} Server is running...`);
