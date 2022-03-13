@@ -1,4 +1,4 @@
-// Telegram bot screenshot -> https://i.imgur.com/2QxCwzb.jpg
+// Telegram bot screenshot -> https://i.imgur.com/8spnWWB.jpg
 // Add me on Telegram      -> https://t.me/NCCU_bot
 
 const jsSHA = require('jssha');
@@ -34,7 +34,7 @@ function getNewTaipeiData(mode, body){
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 1200,
+            timeout: 1000,
         }, function(error, response, ntbody){
             try{
                 if(error){
@@ -63,7 +63,7 @@ function getData(mode){
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 1200,
+            timeout: 1000,
         }, async function(error, response, body){
             try{
                 if(error){
