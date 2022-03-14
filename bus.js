@@ -118,7 +118,7 @@ function getData(mode){
                     data[mode].lastUpdateTimeMs = nowMs;
                     result.push(`--`);
                     result.push(`資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</pre>`);
-                    console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`)
+                    console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`);
                     // update each bus data content
                     data[mode].str = result.join("\n");
                     resolve(data[mode].str);
@@ -171,7 +171,7 @@ function isDataUpdated(mode){
         return false;
     return true;
 }
-function isStopUpdateInNight(){
+function isStopUpdateAtNight(){
     // 02:00 ~ 05:00 don't call api
     let now = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
     let hours = now[11]+now[12];
@@ -209,7 +209,7 @@ bot.on('message', async (msg) => {
     let mode = msg.text.substring(1);
     if( Object.keys(data).indexOf(mode) > -1 ){
         serverCalledCount += 1;
-        if(isStopUpdateInNight()){
+        if(isStopUpdateAtNight()){
             let replyMsg = "深夜時間(02:00~05:00)，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
@@ -225,15 +225,14 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
         catch(e){
-            console.log(e);
-            bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`, {parse_mode: 'HTML'});
+            bot.sendMessage(process.env.adminID, `🔴 伺服器錯誤\n${e}。`);
+            bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`);
         }
     }
     else if( !(msg.text == "/server" || msg.text == "/start") ){
         bot.sendMessage(process.env.adminID, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
     }
 });
-
 const app = express();
 app.get('/', function (req, res) {
     res.redirect("https://t.me/NCCU_bot");
