@@ -199,7 +199,7 @@ function isStr1BiggerThanStr2(str1, str2){
 function isDataUpdated(mode){
     // check data is fresh
     let nowMs = (+new Date())+8*60*60*1000;
-    if( nowMs - data[mode].lastUpdateTimeMs >= 1*1000 || data[mode].str.length < 1)
+    if( nowMs - data[mode].lastUpdateTimeMs >= 15*1000 || data[mode].str.length < 1)
         return false;
     return true;
 }
