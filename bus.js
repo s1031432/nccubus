@@ -79,6 +79,12 @@ function getData(mode){
 }
 function getEachBusContent(body){
     let str = `${body.RouteName.Zh_tw}`;
+    if(mode == `nccu1` && body.RouteName.Zh_tw == "237"){
+        if(body.Direction == 0)
+            str += "(往東門)";
+        else
+            str += "(往動物園)";
+    }
     if(body.StopStatus == 0){
         if(body.EstimateTime >= 30)
             str = body.EstimateTime < 120 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body.EstimateTime/60)}分`;
