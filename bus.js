@@ -66,7 +66,7 @@ function getData(mode){
             data[mode].lastUpdateTimeMs = nowMs;
             if( result[result.length-1] != `--`)
                 result.push(`--`)
-            result.push(`<code>${clock[new Date(data[mode].lastUpdateTimeMs).getHours%12]}資料最後更新時間\n${clock[(new Date(data[mode].lastUpdateTimeMs).getHours+1)%12]}${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</code>`);
+            result.push(`<code>${clock[new Date(data[mode].lastUpdateTimeMs).getHours()%12]} 資料最後更新時間\n${clock[(new Date(data[mode].lastUpdateTimeMs).getHours()+1)%12]} ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</code>`);
             console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`);
             // update each bus data content
             data[mode].str = result.join("\n");
