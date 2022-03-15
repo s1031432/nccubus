@@ -31,6 +31,7 @@ function requestBusData(url) {
         headers: GetAuthorizationHeader(),
         gzip: true,
         json: true,
+        timeout: 3000,
     }).then(response => response.json());
 }
 function getData(mode){
@@ -41,7 +42,6 @@ function getData(mode){
         let TaipeiApi = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
         let urls = [NewTaipeiAPI, TaipeiApi];
         let promises = urls.map(url => requestBusData(url));
-        console.log("mode", mode);
         Promise.all(promises)
         .then( responses => {
             body = responses[0].concat(responses[1]);
@@ -106,7 +106,7 @@ function getEachBusContent(body){
 function sortBusData(body){
     // sort data by StopStatus & EstimateTime
     // --sort by StopStatus
-    var temp = "for swap"
+    var temp = "for swap";
     for(var i=0;i<body.length-1;i++){
         for(var j=i+1;j<body.length;j++){
             if( body[i].StopStatus > body[j].StopStatus){
