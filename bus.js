@@ -51,11 +51,11 @@ function getData(mode){
             if(mode == "zoo_nccu1" || mode == "nccu_zoo" || mode == "nccu1_zoo"){
                 for(var i=0;i<body.length;i++)
                     if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1))
-                        result.push(mode, getEachBusContent(body[i]) );
+                        result.push(getEachBusContent(mode, body[i]) );
                 result.push(`--`)
                 for(var i=0;i<body.length;i++)
                     if( ! ((data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)) )
-                        result.push(mode, getEachBusContent(body[i]) );
+                        result.push(getEachBusContent(mode, body[i]) );
             }
             else{
                 for(var i=0;i<body.length;i++)
