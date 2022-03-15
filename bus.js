@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
 const telegramBot = require('node-telegram-bot-api');
-const clock = "🕛🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚";
+const clock = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"];
 // fill in your telegram token
 const token = process.env.telegramtoken;
 const bot = new telegramBot(token, {polling: true});
