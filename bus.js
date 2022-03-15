@@ -165,7 +165,7 @@ function isStr1BiggerThanStr2(str1, str2){
     if( str1[0] == str2[0] )
         return isStr1BiggerThanStr2(str1.substring(1), str2.substring(1));
     // "綠1", "棕9"
-    return str1.length > str2.length;
+    return str1 > str2;
 }
 function isDataUpdated(mode){
     // check data is fresh
