@@ -31,7 +31,7 @@ function requestBusData(url) {
         headers: GetAuthorizationHeader(),
         gzip: true,
         json: true,
-        timeout: 300,
+        timeout: 800,
     }).then(response => response.json());
 }
 function getData(mode){
@@ -72,8 +72,8 @@ function getData(mode){
             data[mode].str = result.join("\n");
             resolve(data[mode].str);
         }).catch( err => {
-            console.log("Promise.all()", err);
-            resolve("WTF");
+            console.log("-- Promise.all()", err);
+            resolve(`${data[mode].str}\n❗️ PTX伺服器錯誤，資料未更新。`);
         });
     });
 }
