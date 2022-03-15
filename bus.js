@@ -251,17 +251,10 @@ bot.on('message', async (msg) => {
         }
         // bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
         while(1){
-            try{
-                replyMsg = await getData(mode);
-                if(replyMsg != "o'_'o")
-                    bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-                    break;
-            }
-            catch(e){
-                console.log(e);
-                bot.sendMessage(process.env.adminID, `🔴 伺服器錯誤\n${e}。`);
-                bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`);
-            }
+            replyMsg = await getData(mode);
+            if(replyMsg != "o'_'o")
+                bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+                break;
         }
     }
     else if( !(msg.text == "/server" && msg.text == "/start") ){
