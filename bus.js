@@ -9,12 +9,7 @@ const telegramBot = require('node-telegram-bot-api');
 // fill in your telegram token
 const token = process.env.telegramtoken;
 const bot = new telegramBot(token, {polling: true});
-const requestOptions = {
-    headers: GetAuthorizationHeader(),
-    gzip: true,
-    json: true,
-    timeout: 666,
-}
+
 data = require('./busdata.json');
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
@@ -34,7 +29,12 @@ function GetAuthorizationHeader() {
 
 function getNewTaipeiData(mode, body){
     return new Promise( resolve => { 
-        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`, requestOptions, async function(error, response, ntbody){
+        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
+            headers: GetAuthorizationHeader(),
+            gzip: true,
+            json: true,
+            timeout: 666,
+        }, async function(error, response, ntbody){
             try{
                 if(error){
                     console.log("-- getNewTaipeiData() ERROR: ", mode, error);
@@ -56,7 +56,12 @@ function getData(mode){
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
     return new Promise( resolve => { 
-        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`, requestOptions, async function(error, response, body){
+        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
+            headers: GetAuthorizationHeader(),
+            gzip: true,
+            json: true,
+            timeout: 666,
+        }, async function(error, response, body){
             try{
                 if(error){
                     console.log("-- getData() ERROR: ", mode, error);
