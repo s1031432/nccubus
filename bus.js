@@ -230,14 +230,12 @@ bot.on('message', async (msg) => {
 });
 const app = express();
 app.get('/', async function (req, res) {
-    for(var i=0;i<Object.keys(data).length;i++){
+    for(var i=0;i<Object.keys(data).length;i++)
         await getData(Object.keys(data)[i]);
-    }
     res.redirect("https://t.me/NCCU_bot");
 });
 app.listen(process.env.PORT || 5000, async function () {
-    for(var i=0;i<Object.keys(data).length;i++){
+    for(var i=0;i<Object.keys(data).length;i++)
         await getData(Object.keys(data)[i]);
-    }
     console.log(`-- ${serverStartTime} Server is running...`);
 });
