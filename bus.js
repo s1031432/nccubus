@@ -47,11 +47,7 @@ function getData(mode){
             body = sortBusData(body);
             // console.log(body);
             let result = [data[mode].title,"--"];
-            if(mode == "xinguang" || mode == "nccu1"){
-                for(var i=0;i<body.length;i++)
-                    result.push( getEachBusContent(body[i]) );
-            }
-            else{
+            if(mode == "zoo_nccu1" || mode == "nccu_zoo" || mode == "nccu1_zoo"){
                 for(var i=0;i<body.length;i++)
                     if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1))
                         result.push( getEachBusContent(body[i]) );
@@ -59,6 +55,10 @@ function getData(mode){
                 for(var i=0;i<body.length;i++)
                     if( ! ((data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)) )
                         result.push( getEachBusContent(body[i]) );
+            }
+            else{
+                for(var i=0;i<body.length;i++)
+                    result.push( getEachBusContent(body[i]) );
             }
             let nowMs = (+new Date())+8*60*60*1000;
             // update each bus data lastUpdateTime
