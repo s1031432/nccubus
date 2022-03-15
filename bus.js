@@ -73,7 +73,7 @@ function getData(mode){
             resolve(data[mode].str);
         }).catch( err => {
             console.log("Promise.all()", err);
-            resolve("o'_'o");
+            resolve(data[mode].str);
         });
     });
 }
@@ -220,17 +220,9 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
             return;
         }
-        // bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
-        while(1){
-            let replyMsg = await getData(mode);
-            if(replyMsg != "o'_'o"){
-                bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-                break;
-            }
-            else{
-                console.log("aaa");
-            }
-        }
+        bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
+        let replyMsg = await getData(mode);
+        bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
     }
     else if( !(msg.text == "/server" && msg.text == "/start") ){
         bot.sendMessage(process.env.adminID, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
@@ -238,8 +230,14 @@ bot.on('message', async (msg) => {
 });
 const app = express();
 app.get('/', async function (req, res) {
+    for(var i=0;i<Object.keys(data).length;i++){
+        await getData(Object.keys(data)[i]);
+    }
     res.redirect("https://t.me/NCCU_bot");
 });
 app.listen(process.env.PORT || 5000, async function () {
+    for(var i=0;i<Object.keys(data).length;i++){
+        await getData(Object.keys(data)[i]);
+    }
     console.log(`-- ${serverStartTime} Server is running...`);
 });
