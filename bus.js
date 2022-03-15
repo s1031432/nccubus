@@ -28,17 +28,17 @@ function GetAuthorizationHeader() {
 }
 
 function getNewTaipeiData(mode, body){
-    return new Promise( resolve => { 
+    return new Promise( (resolve, reject) => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 666,
+            timeout: 300,
         }, async function(error, response, ntbody){
             try{
                 if(error){
                     console.log("-- getNewTaipeiData() ERROR: ", mode, error);
-                    getNewTaipeiData(mode, body);
+                    reject("o'_'o");
                 }
                 else{
                     for(let i=0;i<ntbody.length;i++)
@@ -47,7 +47,8 @@ function getNewTaipeiData(mode, body){
                 }
             }
             catch(e){
-                console.log(e);
+                console.log("-- getNewTaipeiData() CATCH: ", e);
+                reject("o'_'o");
             }
         });
     });
@@ -60,12 +61,12 @@ function getData(mode){
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 666,
+            timeout: 300,
         }, async function(error, response, body){
             try{
                 if(error){
                     console.log("-- getData() ERROR: ", mode, error);
-                    getData(mode);
+                    reject("o'_'o");
                 }
                 else{
                     // for 933
@@ -99,8 +100,8 @@ function getData(mode){
                 }
             }
             catch(e){
-                console.log(e);
-                resolve(data[mode].str);
+                console.log("-- getData() CATCH:" ,e);
+                reject("o'_'o");
             }
         });
     });
@@ -117,7 +118,7 @@ function getEachBusContent(body){
         if(body.EstimateTime >= 30)
             str = body.EstimateTime < 120 ? `✅ ${str} - 即將進站` : `✅ ${str} - 約${parseInt(body.EstimateTime/60)}分(尚未發車)`;
         else if(body.EstimateTime < 30)
-            str = `✅ ${str} - 進站中`
+            str = `✅ ${str} - 進站中`;
         else if(body.EstimateTime == undefined)
             str = `💤 ${str} - 尚未發車`;
     }
@@ -243,8 +244,6 @@ bot.on('message', async (msg) => {
         if(isStopUpdateAtNight()){
             let replyMsg = "深夜時間(02:00~05:00)，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-            bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
-            return;
         }
         if(isDataUpdated(mode)){
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
@@ -252,7 +251,11 @@ bot.on('message', async (msg) => {
         }
         try{
             // bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
-            let replyMsg = await getData(mode);
+            while(1){
+                replyMsg = await getData(mode);
+                if(replyMsg != "o'_'o")
+                    break;
+            }
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
         }
         catch(e){
