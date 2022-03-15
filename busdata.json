@@ -38,6 +38,10 @@
     "nccu1":{
         "title" : "➡️ 政大一站(校門前)",
         "stationID" : 1001409,
+        "whiteList" : [
+            ["Roosevelt Rd. Metro Bus", "236Shuttle", "237", "282", "530", "611", "66", "676", "BR6", "BR21", "CB21"],
+            ["G1", "933", "BR18"]
+        ],
         "str" : "",
         "lastUpdateTimeMs" : 0
     }
