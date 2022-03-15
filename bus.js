@@ -213,7 +213,7 @@ bot.on('message', async (msg) => {
     if( Object.keys(data).indexOf(mode) > -1 ){
         serverCalledCount += 1;
         if(isStopUpdateAtNight()){
-            let replyMsg = `${data[mode].str}\n❗️ 深夜時段(02:00~05:00)\n❗️ 到站時間停止更新。`;
+            let replyMsg = `${data[mode].str}\n❗️ <code>深夜時段(02:00~05:00)\n❗️ 到站時間停止更新。</code>`;
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
             return;
         }
