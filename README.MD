@@ -76,8 +76,8 @@
     npm start
 ```
 ### Demo on Telegram screenshot
-<img src="https://i.imgur.com/ako16i7.jpg" alt="screenshot" style="width:360px;"/>
-<img src="https://i.imgur.com/vEQqufy.jpg" alt="qrcode" style="width:360px;"/>
+<img src="https://raw.githubusercontent.com/s1031432/nccubus/master/screenshot.jpg" alt="screenshot" style="width:360px;"/>
+<img src="https://raw.githubusercontent.com/s1031432/nccubus/master/qrcode.jpg" alt="qrcode" style="width:360px;"/>
 
 <!-- CONTACT -->
 ## Contact
