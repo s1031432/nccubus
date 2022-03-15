@@ -34,35 +34,6 @@ function requestBusData(url) {
         timeout: 300,
     }).then(response => response.json());
 }
-function getNewTaipeiData(mode, body){
-    return new Promise( resolve => { 
-        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
-            headers: GetAuthorizationHeader(),
-            gzip: true,
-            json: true,
-            timeout: 300,
-        }, async function(error, response, ntbody){
-            try{
-                if(error){
-                    console.log("-- getNewTaipeiData() ERROR: ", mode, error);
-                    resolve("o'_'o");
-                }
-                else{
-                    for(let i=0;i<ntbody.length;i++)
-                        body.push(ntbody[i]);
-                    resolve(body);
-                }
-            }
-            catch(e){
-                console.log("-- getNewTaipeiData() CATCH: ", e);
-                resolve("o'_'o");
-            }
-        });
-    });
-}
-function requestBusData(url) {
-    return fetch(url).then(response => response.json());
-}
 function getData(mode){
     return new Promise( resolve => { 
         // Call ptx API to get bus data(json)
