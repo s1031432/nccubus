@@ -212,13 +212,13 @@ bot.on('message', async (msg) => {
     if( Object.keys(data).indexOf(mode) > -1 ){
         serverCalledCount += 1;
         if(isStopUpdateAtNight()){
-            let replyMsg = "深夜時間(02:00~05:00)，到站時間停止更新。";
+            let replyMsg = `${data[mode].str}\n❗️ 深夜時間(02:00~05:00)，到站時間停止更新。`;
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-            bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
             return;
         }
         if(isDataUpdated(mode)){
-            bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
+            let replyMsg = data[mode].str;
+            bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
             return;
         }
         bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
