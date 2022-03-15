@@ -56,7 +56,7 @@ function getNewTaipeiData(mode, body){
 function getData(mode){
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
-    return new Promise( resolve => { 
+    return new Promise( (resolve, reject) => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
