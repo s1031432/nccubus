@@ -2,7 +2,7 @@
 // Add me on Telegram      -> https://t.me/NCCU_bot
 
 const jsSHA = require('jssha');
-const request = require('request');
+const fetch = require('node-fetch');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
 const telegramBot = require('node-telegram-bot-api');
@@ -26,7 +26,14 @@ function GetAuthorizationHeader() {
     var Authorization = 'hmac username=\"' + AppID + '\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"' + HMAC + '\"';
     return { 'Authorization': Authorization, 'X-Date': GMTString ,'Accept-Encoding': 'gzip'}; 
 }
-
+function requestBusData(url) {
+    return fetch(url, {
+        headers: GetAuthorizationHeader(),
+        gzip: true,
+        json: true,
+        timeout: 300,
+    }).then(response => response.json());
+}
 function getNewTaipeiData(mode, body){
     return new Promise( resolve => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
@@ -53,58 +60,49 @@ function getNewTaipeiData(mode, body){
         });
     });
 }
+function requestBusData(url) {
+    return fetch(url).then(response => response.json());
+}
 function getData(mode){
-    // Call ptx API to get bus data(json)
-    // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
     return new Promise( resolve => { 
-        request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
-            headers: GetAuthorizationHeader(),
-            gzip: true,
-            json: true,
-            timeout: 300,
-        }, async function(error, response, body){
-            try{
-                if(error){
-                    console.log("-- getData() ERROR: ", mode, error);
-                    resolve("o'_'o");
-                }
-                else{
-                    // for 933
-                    body = await getNewTaipeiData(mode, body);
-                    if(body == "o'_'o")
-                        resolve("o'_'o");
-                    body = sortBusData(body);
-                    // console.log(body);
-                    let result = [data[mode].title,"--"];
-                    if(mode == "xinguang" || mode == "nccu1"){
-                        for(var i=0;i<body.length;i++)
-                            result.push( getEachBusContent(body[i]) );
-                    }
-                    else{
-                        for(var i=0;i<body.length;i++)
-                            if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1))
-                                result.push( getEachBusContent(body[i]) );
-                        result.push(`--`)
-                        for(var i=0;i<body.length;i++)
-                            if( ! ((data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)) )
-                                result.push( getEachBusContent(body[i]) );
-                    }
-                    let nowMs = (+new Date())+8*60*60*1000;
-                    // update each bus data lastUpdateTime
-                    data[mode].lastUpdateTimeMs = nowMs;
-                    if( result[result.length-1] != `--`)
-                        result.push(`--`)
-                    result.push(`<code>資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</code>`);
-                    console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`);
-                    // update each bus data content
-                    data[mode].str = result.join("\n");
-                    resolve(data[mode].str);
-                }
+        // Call ptx API to get bus data(json)
+        // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
+        let NewTaipeiAPI = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
+        let TaipeiApi = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
+        let urls = [NewTaipeiAPI, TaipeiApi];
+        let promises = urls.map(url => requestBusData(url));
+        Promise.all(promises)
+        .then( responses => {
+            body = responses[0].concat(responses[1]);
+            body = sortBusData(body);
+            // console.log(body);
+            let result = [data[mode].title,"--"];
+            if(mode == "xinguang" || mode == "nccu1"){
+                for(var i=0;i<body.length;i++)
+                    result.push( getEachBusContent(body[i]) );
             }
-            catch(e){
-                console.log("-- getData() CATCH:" ,e);
-                resolve("o'_'o");
+            else{
+                for(var i=0;i<body.length;i++)
+                    if( (data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1))
+                        result.push( getEachBusContent(body[i]) );
+                result.push(`--`)
+                for(var i=0;i<body.length;i++)
+                    if( ! ((data[mode].whiteList[0].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==0)  || (data[mode].whiteList[1].indexOf(body[i].RouteName.En)>-1 && body[i].Direction==1)) )
+                        result.push( getEachBusContent(body[i]) );
             }
+            let nowMs = (+new Date())+8*60*60*1000;
+            // update each bus data lastUpdateTime
+            data[mode].lastUpdateTimeMs = nowMs;
+            if( result[result.length-1] != `--`)
+                result.push(`--`)
+            result.push(`<code>資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</code>`);
+            console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`);
+            // update each bus data content
+            data[mode].str = result.join("\n");
+            resolve(data[mode].str);
+        }).catch( err => {
+            console.log("Promise.all()", err);
+            resolve("o'_'o");
         });
     });
 }
