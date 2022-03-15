@@ -214,6 +214,8 @@ bot.on('message', async (msg) => {
         if(isStopUpdateAtNight()){
             let replyMsg = "深夜時間(02:00~05:00)，到站時間停止更新。";
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+            bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
+            return;
         }
         if(isDataUpdated(mode)){
             bot.sendMessage(msg.chat.id, data[mode].str, {parse_mode: 'HTML'});
