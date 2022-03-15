@@ -32,7 +32,7 @@ function requestBusData(url) {
         gzip: true,
         json: true,
         timeout: 1500,
-    }).then(response => response.json());
+    }).then(response => response);
 }
 function getData(mode){
     return new Promise( resolve => { 
