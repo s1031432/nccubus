@@ -33,12 +33,12 @@ function getNewTaipeiData(mode, body){
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 555,
+            timeout: 666,
         }, async function(error, response, ntbody){
             try{
                 if(error){
                     console.log("-- ERROR: ", mode, error);
-                    await getNewTaipeiData(mode);
+                    getNewTaipeiData(mode);
                 }
                 else{
                     for(let i=0;i<ntbody.length;i++){
@@ -61,12 +61,12 @@ function getData(mode){
             headers: GetAuthorizationHeader(),
             gzip: true,
             json: true,
-            timeout: 555,
+            timeout: 666,
         }, async function(error, response, body){
             try{
                 if(error){
                     console.log("-- ERROR: ", mode, error);
-                    await getData(mode);
+                    getData(mode);
                 }
                 else{
                     // for 933
@@ -199,7 +199,7 @@ function isStr1BiggerThanStr2(str1, str2){
 function isDataUpdated(mode){
     // check data is fresh
     let nowMs = (+new Date())+8*60*60*1000;
-    if( nowMs - data[mode].lastUpdateTimeMs >= 5*1000 || data[mode].str.length < 1)
+    if( nowMs - data[mode].lastUpdateTimeMs >= 1*1000 || data[mode].str.length < 1)
         return false;
     return true;
 }
