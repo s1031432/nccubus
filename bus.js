@@ -31,7 +31,7 @@ function requestBusData(url) {
         headers: GetAuthorizationHeader(),
         gzip: true,
         json: true,
-        timeout: 300,
+        timeout: 30000,
     }).then(response => response.json());
 }
 function getData(mode){
