@@ -59,7 +59,7 @@ function getData(mode){
             }
             else{
                 for(var i=0;i<body.length;i++)
-                    result.push( getEachBusContent(body[i]) );
+                    result.push( getEachBusContent(mode, body[i]) );
             }
             let nowMs = (+new Date())+8*60*60*1000;
             // update each bus data lastUpdateTime
