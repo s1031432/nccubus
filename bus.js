@@ -73,7 +73,7 @@ function getData(mode){
             resolve(data[mode].str);
         }).catch( err => {
             console.log("Promise.all()", err);
-            resolve(data[mode].str);
+            resolve("WTF");
         });
     });
 }
