@@ -162,8 +162,7 @@ function isStr1BiggerThanStr2(str1, str2){
     if( (isNaN(str1) && !isNaN(str2)) || (!isNaN(str1) && isNaN(str2)) )
         return isNaN(str1);
     // "棕6", "棕8", "通勤21", "通勤22"
-    if( str1[0] == str2[0] )
-        return isStr1BiggerThanStr2(str1.substring(1), str2.substring(1));
+    return isStr1BiggerThanStr2(str1.substring(1), str2.substring(1));
     // "綠1", "棕9"
     return str1 > str2;    
 }
@@ -234,7 +233,7 @@ app.get('/', async function (req, res) {
     res.redirect("https://t.me/NCCU_bot");
 });
 app.listen(process.env.PORT || 5000, async function () {
+    console.log(`-- ${serverStartTime} Server is running...`);
     for(var i=0;i<Object.keys(data).length;i++)
         await getData(Object.keys(data)[i]);
-    console.log(`-- ${serverStartTime} Server is running...`);
 });
