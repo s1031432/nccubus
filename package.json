@@ -3,7 +3,6 @@
   "version": "1.0.2",
   "description": "Common bus routes for NCCU",
   "main": "bus.js",
-  "type": "module",
   "scripts": {
     "start": "node bus.js",
     "test": "echo \"Error: no test specified\" && exit 1"
