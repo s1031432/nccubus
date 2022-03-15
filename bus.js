@@ -37,13 +37,12 @@ function getNewTaipeiData(mode, body){
         }, async function(error, response, ntbody){
             try{
                 if(error){
-                    console.log("-- ERROR: ", mode, error);
-                    getNewTaipeiData(mode);
+                    console.log("-- getNewTaipeiData() ERROR: ", mode, error);
+                    getNewTaipeiData(mode, body);
                 }
                 else{
-                    for(let i=0;i<ntbody.length;i++){
+                    for(let i=0;i<ntbody.length;i++)
                         body.push(ntbody[i]);
-                    }
                     resolve(body);
                 }
             }
@@ -65,7 +64,7 @@ function getData(mode){
         }, async function(error, response, body){
             try{
                 if(error){
-                    console.log("-- ERROR: ", mode, error);
+                    console.log("-- getData() ERROR: ", mode, error);
                     getData(mode);
                 }
                 else{
