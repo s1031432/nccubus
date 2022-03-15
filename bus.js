@@ -252,9 +252,13 @@ bot.on('message', async (msg) => {
         // bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
         while(1){
             replyMsg = await getData(mode);
-            if(replyMsg != "o'_'o")
+            if(replyMsg != "o'_'o"){
                 bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
                 break;
+            }
+            else{
+                console.log("aaa");
+            }
         }
     }
     else if( !(msg.text == "/server" && msg.text == "/start") ){
