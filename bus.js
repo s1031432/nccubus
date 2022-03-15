@@ -186,13 +186,13 @@ function isStopUpdateAtNight(){
 }
 bot.onText(/\/start$/, (msg) => {
     let replyMsg = [];
-    replyMsg.push("<code><b><u>/start</u></b></code>\n介紹及指令說明。\n");
-    replyMsg.push("<code><b><u>/server</u></b></code>\n查看伺服器狀況。\n");
-    replyMsg.push("<code><b><u>/zoo_nccu1</u></b></code>\n查看捷運動物園站（往政大方向）的公車到站時間。上半部為<b>有停靠政大一站</b>的公車。\n");
-    replyMsg.push("<code><b><u>/nccu_zoo</u></b></code>\n查看政大站（麥側萊爾富）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。\n");
-    replyMsg.push("<code><b><u>/nccu1_zoo</u></b></code>\n查看政大一站（Jason超市）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。\n");
-    replyMsg.push("<code><b><u>/xinguang</u></b></code>\n查看停靠新光路口站（龍角）的公車到站時間。\n");
-    replyMsg.push("<code><b><u>/nccu1</u></b></code>\n查看政大一站（校門口）的公車到站時間。\n");
+    replyMsg.push("/start\n介紹及指令說明。\n");
+    replyMsg.push("/server\n查看伺服器狀況。\n");
+    replyMsg.push("/zoo_nccu1\n查看捷運動物園站（往政大方向）的公車到站時間。上半部為<b>有停靠政大一站</b>的公車。\n");
+    replyMsg.push("/nccu_zoo\n查看政大站（麥側萊爾富）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。\n");
+    replyMsg.push("/nccu1_zoo\n查看政大一站（Jason超市）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。\n");
+    replyMsg.push("/xinguang\n查看停靠新光路口站（龍角）的公車到站時間。\n");
+    replyMsg.push("/nccu1\n查看政大一站（校門口）的公車到站時間。\n");
     replyMsg.push("<b>⚠️ 注意</b>");
     replyMsg.push("本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。\n");
     replyMsg.push("📎 專案Github");
@@ -204,7 +204,7 @@ bot.onText(/\/server$/, (msg) => {
     let replyMsg = [];
     replyMsg.push(`伺服器上次啟動時間`);
     replyMsg.push(`<code>${getDateTime.getDateTime(serverStartTime)}</code>\n`);
-    replyMsg.push(`伺服器啟動後呼叫次數`);
+    replyMsg.push(`啟動後被呼叫次數`);
     replyMsg.push(`<code>${serverCalledCount}</code>\n`);
     replyMsg = replyMsg.join("\n");
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
