@@ -101,6 +101,7 @@ function getData(mode){
             }
             catch(e){
                 console.log(e);
+                resolve(data[mode].str);
             }
         });
     });
