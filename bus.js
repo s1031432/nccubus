@@ -1,8 +1,8 @@
 // Telegram bot screenshot -> https://raw.githubusercontent.com/s1031432/nccubus/master/screenshot.jpg
 // Add me on Telegram      -> https://t.me/NCCU_bot
 
-import fetch from 'node-fetch';
 const jsSHA = require('jssha');
+const fetch = require('node-fetch');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
 const telegramBot = require('node-telegram-bot-api');
