@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
 const telegramBot = require('node-telegram-bot-api');
+const clock = "🕛🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚";
 // fill in your telegram token
 const token = process.env.telegramtoken;
 const bot = new telegramBot(token, {polling: true});
@@ -65,14 +66,14 @@ function getData(mode){
             data[mode].lastUpdateTimeMs = nowMs;
             if( result[result.length-1] != `--`)
                 result.push(`--`)
-            result.push(`<code>資料最後更新時間\n${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</code>`);
+            result.push(`<code>${clock[new Date(data[mode].lastUpdateTimeMs).getHours%12]}資料最後更新時間\n${clock[(new Date(data[mode].lastUpdateTimeMs).getHours+1)%12]}${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))}</code>`);
             console.log(`-- ${getDateTime.getDateTime(new Date(data[mode].lastUpdateTimeMs))} ${mode} data update`);
             // update each bus data content
             data[mode].str = result.join("\n");
             resolve(data[mode].str);
         }).catch( err => {
             console.log("-- Promise.all()", err);
-            resolve(`${data[mode].str}\n❗️ PTX伺服器錯誤，資料無法更新。`);
+            resolve(`${data[mode].str}\n<b>❗️ PTX伺服器錯誤，資料無法更新。</b>`);
         });
     });
 }
@@ -212,7 +213,7 @@ bot.on('message', async (msg) => {
     if( Object.keys(data).indexOf(mode) > -1 ){
         serverCalledCount += 1;
         if(isStopUpdateAtNight()){
-            let replyMsg = `${data[mode].str}\n❗️ 深夜時間(02:00~05:00)，到站時間停止更新。`;
+            let replyMsg = `${data[mode].str}\n❗️ 深夜時段(02:00~05:00)\n❗️ 到站時間停止更新。`;
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
             return;
         }
