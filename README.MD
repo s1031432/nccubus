@@ -32,22 +32,14 @@
 
 ## Telegram Bot Command List
 <table>
-    <tr>
-        <td>Command</td><td>Describe</td>
-    </tr>
-    <tr>
-        <td><b><u><a>/start</a></u></b></td><td>介紹及指令說明。</td>
-    </tr>
-    <tr>
-        <td><b><u><a>/server</a></u></b></td><td>查看伺服器狀況。</td>
-    </tr>
-    <tr>
-        <td><b><u>/zoo_nccu1</u></b></td><td>查看捷運動物園站到政大一站（校門口）公車到站時間。只會顯示有停靠政大一站的公車，有些公車（如295, 679）雖不停靠政大一站（校門口），但<b>會停靠新光路口</b>，或是<b>極度繞路（如棕11）</b>，就不會被列出。</td>
-    </tr>
-    <tr><td><b><u>/nccu_zoo</u></b></td><td>查看政大站（麥側萊爾富）到捷運動物園站的公車到站時間。查看政大站（麥側萊爾富）到捷運動物園站的公車到站時間。有些公車（如530）雖有停靠政大站（麥側萊爾富），但<b>不會停靠捷運動物園站</b>，或是<b>極度繞路（如棕11）</b>，就不會被列出。</td></tr>
-    <tr><td><b><u>/nccu1_zoo</u></b></td><td>查看政大一站（Jason超市對面）到捷運動物園站的公車到站時間。只會顯示會停靠捷運動物園站的公車，有些公車（如530）雖會停靠政大一站（Jason超市對面），但<b>不會停靠捷運動物園站</b>，就不會被列出。</td></tr>
-    <tr><td><b><u>/xinguang</u></b></td><td>查看停靠新光路口站（龍角前）的所有公車到站時間。</td></tr>
-    <tr><td><b><u>/nccu1</u></b></td><td>查看政大一站（校門口）的所有公車到站時間。</td></tr>
+    <tr><td>Command</td><td>Describe</td></tr>
+    <tr><td><b><u><a>/start</a></u></b></td><td>介紹及指令說明。</td></tr>
+    <tr><td><b><u><a>/server</a></u></b></td><td>查看伺服器狀況。</td></tr>
+    <tr><td><b><u>/zoo_nccu1</u></b></td><td>查看捷運動物園站（往政大方向）的公車到站時間。上半部為<b>有停靠政大一站</b>的公車。</td></tr>
+    <tr><td><b><u>/nccu_zoo</u></b></td><td>查看政大站（麥側萊爾富）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。</td></tr>
+    <tr><td><b><u>/nccu1_zoo</u></b></td><td>查看政大一站（Jason超市）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。</td></tr>
+    <tr><td><b><u>/xinguang</u></b></td><td>查看停靠新光路口站（龍角前）的公車到站時間。</td></tr>
+    <tr><td><b><u>/nccu1</u></b></td><td>查看政大一站（校門口）的公車到站時間。</td></tr>
 </table>
 
 ## Built With
