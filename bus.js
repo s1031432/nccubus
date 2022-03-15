@@ -260,7 +260,7 @@ bot.on('message', async (msg) => {
             bot.sendMessage(msg.chat.id, `🔴 伺服器錯誤，請稍後再試。`);
         }
     }
-    else if( !(msg.text == "/server" || msg.text == "/start") ){
+    else if( !(msg.text == "/server" && msg.text == "/start") ){
         bot.sendMessage(process.env.adminID, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
     }
 });
