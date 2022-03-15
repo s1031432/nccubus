@@ -223,7 +223,7 @@ bot.on('message', async (msg) => {
         }
         // bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
         while(1){
-            replyMsg = await getData(mode);
+            let replyMsg = await getData(mode);
             if(replyMsg != "o'_'o"){
                 bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
                 break;
@@ -242,8 +242,5 @@ app.get('/', async function (req, res) {
     res.redirect("https://t.me/NCCU_bot");
 });
 app.listen(process.env.PORT || 5000, async function () {
-    for(var i=0;i<Object.keys(data).length;i++){
-        await getData(Object.keys(data)[i]);
-    }
     console.log(`-- ${serverStartTime} Server is running...`);
 });
