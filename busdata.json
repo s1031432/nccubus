@@ -14,7 +14,7 @@
         "stationID" : 2415,
         "whiteList" : [
             ["G1", "BR18", "933"],
-            ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR6", "66", "282", "611", "679", "295", "295Sub"]
+            ["Roosevelt Rd. Metro Bus", "236Shuttle", "BR3", "BR6", "66", "282", "611", "676", "679", "295", "295Sub"]
         ],
         "str" : "",
         "lastUpdateTimeMs" : 0
