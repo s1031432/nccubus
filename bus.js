@@ -163,8 +163,6 @@ function isStr1BiggerThanStr2(str1, str2){
         return isNaN(str1);
     // "棕6", "棕8", "通勤21", "通勤22"
     return isStr1BiggerThanStr2(str1.substring(1), str2.substring(1));
-    // "綠1", "棕9"
-    return str1 > str2;    
 }
 function isDataUpdated(mode){
     // check data is fresh
