@@ -71,6 +71,8 @@ function getData(mode){
                 else{
                     // for 933
                     body = await getNewTaipeiData(mode, body);
+                    if(body == "o'_'o")
+                        resolve("o'_'o");
                     body = sortBusData(body);
                     // console.log(body);
                     let result = [data[mode].title,"--"];
