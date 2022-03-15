@@ -219,8 +219,8 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg.push("<code><b><u>/zoo_nccu1</u></b></code>\n查看捷運動物園站（往政大方向）的公車到站時間。上半部為<b>有停靠政大一站</b>的公車。\n");
     replyMsg.push("<code><b><u>/nccu_zoo</u></b></code>\n查看政大站（麥側萊爾富）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。\n");
     replyMsg.push("<code><b><u>/nccu1_zoo</u></b></code>\n查看政大一站（Jason超市）的公車到站時間。上半部為<b>有停靠捷運動物園站</b>的公車。\n");
-    replyMsg.push("<code><b><u>/xinguang</u></b></code>\n查看停靠新光路口站的公車到站時間。\n");
-    replyMsg.push("<code><b><u>/nccu1</u></b></code>\n查看政大一站(校門口)的公車到站時間。\n");
+    replyMsg.push("<code><b><u>/xinguang</u></b></code>\n查看停靠新光路口站（龍角）的公車到站時間。\n");
+    replyMsg.push("<code><b><u>/nccu1</u></b></code>\n查看政大一站（校門口）的公車到站時間。\n");
     replyMsg.push("<b>⚠️ 注意</b>");
     replyMsg.push("本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。\n");
     replyMsg.push("📎 專案Github");
