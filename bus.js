@@ -28,7 +28,7 @@ function GetAuthorizationHeader() {
 }
 
 function getNewTaipeiData(mode, body){
-    return new Promise( (resolve, reject) => { 
+    return new Promise( resolve => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
@@ -38,7 +38,7 @@ function getNewTaipeiData(mode, body){
             try{
                 if(error){
                     console.log("-- getNewTaipeiData() ERROR: ", mode, error);
-                    reject("o'_'o");
+                    resolve("o'_'o");
                 }
                 else{
                     for(let i=0;i<ntbody.length;i++)
@@ -48,7 +48,7 @@ function getNewTaipeiData(mode, body){
             }
             catch(e){
                 console.log("-- getNewTaipeiData() CATCH: ", e);
-                reject("o'_'o");
+                resolve("o'_'o");
             }
         });
     });
@@ -56,7 +56,7 @@ function getNewTaipeiData(mode, body){
 function getData(mode){
     // Call ptx API to get bus data(json)
     // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
-    return new Promise( (resolve, reject) => { 
+    return new Promise( resolve => { 
         request(`https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`,{
             headers: GetAuthorizationHeader(),
             gzip: true,
@@ -66,7 +66,7 @@ function getData(mode){
             try{
                 if(error){
                     console.log("-- getData() ERROR: ", mode, error);
-                    reject("o'_'o");
+                    resolve("o'_'o");
                 }
                 else{
                     // for 933
@@ -101,7 +101,7 @@ function getData(mode){
             }
             catch(e){
                 console.log("-- getData() CATCH:" ,e);
-                reject("o'_'o");
+                resolve("o'_'o");
             }
         });
     });
@@ -252,10 +252,10 @@ bot.on('message', async (msg) => {
         // bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
         while(1){
             try{
-            replyMsg = await getData(mode);
-            if(replyMsg != "o'_'o")
-                bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
-                break;
+                replyMsg = await getData(mode);
+                if(replyMsg != "o'_'o")
+                    bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+                    break;
             }
             catch(e){
                 console.log(e);
