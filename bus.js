@@ -30,9 +30,8 @@ function requestBusData(url) {
     return fetch(url, {
         headers: GetAuthorizationHeader(),
         gzip: true,
-        json: true,
         timeout: 1500,
-    }).then(response => response);
+    }).then(response => response.json());
 }
 function getData(mode){
     return new Promise( resolve => { 
