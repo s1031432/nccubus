@@ -14,6 +14,7 @@ const bot = new telegramBot(token, {polling: true});
 data = require('./busdata.json');
 serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
 serverCalledCount = 0;
+apiCalledCount = 0;
 
 function GetAuthorizationHeader() {
     // Get AppID & AppKey: https://ptx.transportdata.tw/PTX/
@@ -35,7 +36,8 @@ function requestBusData(url) {
     }).then(response => response.json());
 }
 function getData(mode){
-    return new Promise( resolve => { 
+    return new Promise( resolve => {
+        apiCalledCount += 2;
         // Call ptx API to get bus data(json)
         // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
         let NewTaipeiAPI = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
@@ -46,7 +48,6 @@ function getData(mode){
         .then( responses => {
             body = responses[0].concat(responses[1]);
             body = sortBusData(body);
-            // console.log(body);
             let result = [data[mode].title,"--"];
             if(mode == "zoo_nccu1" || mode == "nccu_zoo" || mode == "nccu1_zoo"){
                 for(var i=0;i<body.length;i++)
@@ -210,15 +211,17 @@ bot.onText(/\/server$/, (msg) => {
     let replyMsg = [];
     replyMsg.push(`伺服器上次啟動時間`);
     replyMsg.push(`<code>${getDateTime.getDateTime(serverStartTime)}</code>\n`);
-    replyMsg.push(`啟動後被呼叫次數`);
+    replyMsg.push(`啟動後API被呼叫次數`);
+    replyMsg.push(`<code>${apiCalledCount}</code>\n`);
+    replyMsg.push(`啟動後指令被呼叫次數`);
     replyMsg.push(`<code>${serverCalledCount}</code>\n`);
     replyMsg = replyMsg.join("\n");
     bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
 });
 bot.on('message', async (msg) => {
+    serverCalledCount += 1;
     let mode = msg.text.substring(1);
     if( Object.keys(data).indexOf(mode) > -1 ){
-        serverCalledCount += 1;
         if(isStopUpdateAtNight()){
             let replyMsg = `${data[mode].str}\n❗️ <code>深夜時段(02:00~05:00)\n❗️ 到站時間停止更新</code>`;
             bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
