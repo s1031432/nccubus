@@ -13,7 +13,6 @@
     <br>
     <img src="https://img.shields.io/badge/Node.js-v14.18.1-brightgreen">
     <img src="https://img.shields.io/badge/Express-v4.17.3-brightgreen">
-    <img src="https://img.shields.io/badge/jssha-v3.2.0-brightgreen">
     <img src="https://img.shields.io/badge/node--telegram--bot--api-v0.56.0-brightgreen">
 </div>
 <!-- PROJECT LOGO -->
@@ -45,10 +44,10 @@
 ## Built With
 
 * [Telegram](https://web.telegram.org/k/)
-* [Heroku](https://dashboard.heroku.com/)
+* [AWS](https://aws.amazon.com/tw/)
 * [Node.js](https://nodejs.org/en/)
 * [Express](https://expressjs.com/zh-tw/)
-* [PTX API](https://ptx.transportdata.tw/PTX/)
+* [TDX API](https://tdx.transportdata.tw/)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -57,10 +56,10 @@
 [BotFather](https://t.me/botfather)
 
 ### Sign up and get ptx API ID&Key
-[PTX API](https://ptx.transportdata.tw/PTX/)
+[TDX API](https://tdx.transportdata.tw/)
 
 ### Run Telegram bot on local server or you can deploy to the Cloud
-#### don't forget to change Telegram Bot Token, PTX APPKEY & APPID
+#### don't forget to change Telegram Bot Token, TDX Client ID&Secret
 ```sh
     git clone git@github.com:s1031432/nccubus.git
     cd nccubus
