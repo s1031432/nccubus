@@ -1,49 +1,63 @@
 // Telegram bot screenshot -> https://raw.githubusercontent.com/s1031432/nccubus/master/screenshot.jpg
 // Add me on Telegram      -> https://t.me/NCCU_bot
-
-const jsSHA = require('jssha');
+const request = require('request');
 const fetch = require('node-fetch');
 const express = require('express');
 const getDateTime = require("./getDateTime.js");
 const telegramBot = require('node-telegram-bot-api');
 const clock = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"];
 // fill in your telegram token
-const token = process.env.telegramtoken;
-const bot = new telegramBot(token, {polling: true});
+const secret = require("./secret.json");
+const client_id = secret.client_id;
+const client_secret = secret.client_secret;
+const tgtoken = secret.tgtoken;
+const bot = new telegramBot(tgtoken, {polling: true});
 
-data = require('./busdata.json');
-serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
-serverCalledCount = 0;
-apiCalledCount = 0;
+var tdxtoken = "";
+var data = require('./busdata.json');
+var serverStartTime = getDateTime.getDateTime(new Date((+new Date())+8*60*60*1000));
+var serverCalledCount = 0;
+var apiCalledCount = 0;
 
 function GetAuthorizationHeader() {
-    // Get AppID & AppKey: https://ptx.transportdata.tw/PTX/
-    const AppID  = process.env.ptxappid;
-    const AppKey = process.env.ptxappkey;
-    var GMTString = new Date().toGMTString();
-    var ShaObj = new jsSHA('SHA-1', 'TEXT');
-    ShaObj.setHMACKey(AppKey, 'TEXT');
-    ShaObj.update('x-date: ' + GMTString);
-    var HMAC = ShaObj.getHMAC('B64');
-    var Authorization = 'hmac username=\"' + AppID + '\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"' + HMAC + '\"';
-    return { 'Authorization': Authorization, 'X-Date': GMTString ,'Accept-Encoding': 'gzip'}; 
+    return new Promise( (resolve, reject) => { 
+        request.post("https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token",{
+            headers: {
+                "content-type": "application/x-www-form-urlencoded" 
+            },
+            body: `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`,
+            timeout: 1500,
+            }, function(error, response, body){
+                try{
+                    if(error)
+                        reject(error);
+                    body = JSON.parse(body);
+                    resolve(body.access_token);
+                }
+                catch(e){
+                    console.log(e);
+                    reject(e);
+                }
+        });
+    });
 }
-function requestBusData(url) {
+function requestBusData(url, tdxtoken) {
     return fetch(url, {
-        headers: GetAuthorizationHeader(),
+        headers: {"authorization": `Bearer ${tdxtoken}`},
         gzip: true,
         timeout: 1500,
     }).then(response => response.json());
 }
-function getData(mode){
+function getData(mode, tdxtoken){
     return new Promise( resolve => {
         apiCalledCount += 2;
-        // Call ptx API to get bus data(json)
-        // More infomation: https://ptx.transportdata.tw/MOTC/?urls.primaryName=%E5%85%AC%E8%BB%8AV2#/Bus%20Advanced(By%20Station)/CityBusApi_EstimatedTimeOfArrival_ByStation_2880
-        let NewTaipeiAPI = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
-        let TaipeiApi = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
+        // Call tdx API to get bus data(json)
+        // More infomation: https://tdx.transportdata.tw/api-service/swagger
+        
+        let NewTaipeiAPI = `https://tdx.transportdata.tw/api/advanced/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
+        let TaipeiApi = `https://tdx.transportdata.tw/api/advanced/v2/Bus/EstimatedTimeOfArrival/City/Taipei/PassThrough/Station/${data[mode].stationID}?%24top=30&%24format=JSON`;
         let urls = [NewTaipeiAPI, TaipeiApi];
-        let promises = urls.map(url => requestBusData(url));
+        let promises = urls.map(url => requestBusData(url, tdxtoken));
         Promise.all(promises)
         .then( responses => {
             body = responses[0].concat(responses[1]);
@@ -201,7 +215,7 @@ bot.onText(/\/start$/, (msg) => {
     replyMsg.push("/xinguang\n查看停靠新光路口站（龍角）的公車到站時間。\n");
     replyMsg.push("/nccu1\n查看政大一站（校門口）的公車到站時間。\n");
     replyMsg.push("<b>⚠️ 注意</b>");
-    replyMsg.push("本服務佈署於Heroku雲端伺服器，串接PTX API取得資料後，透過Telegram Bot呈現到站資訊，資料準確性及服務穩定性可能會因為PTX API及相關雲端服務的狀況而受到影響。\n");
+    replyMsg.push("❗️免責聲明\n　　本服務佈署於Amazon Web Services, AWS雲端伺服器，串接運輸資料流通服務平臺Transport Data eXchange ,TDX API取得資料後，再透過Telegram Bot呈現即時到站資訊，資料準確性及服務穩定性可能會因TDX API及相關雲端服務的狀況而受到影響。\n");
     replyMsg.push("📎 專案Github");
     replyMsg.push("https://github.com/s1031432/nccubus");
     replyMsg = replyMsg.join("\n");
@@ -221,6 +235,7 @@ bot.onText(/\/server$/, (msg) => {
 bot.on('message', async (msg) => {
     serverCalledCount += 1;
     let mode = msg.text.substring(1);
+    console.log(msg.chat);
     if( Object.keys(data).indexOf(mode) > -1 ){
         if(isStopUpdateAtNight()){
             let replyMsg = `${data[mode].str}\n❗️ <code>深夜時段(02:00~05:00)\n❗️ 到站時間停止更新</code>`;
@@ -233,19 +248,29 @@ bot.on('message', async (msg) => {
             return;
         }
         bot.sendMessage(msg.chat.id, "資料更新中⋯", {parse_mode: 'HTML'});
-        let replyMsg = await getData(mode);
-        bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+        if(tdxtoken==""){
+            tdxtoken = await GetAuthorizationHeader();
+        }
+        let replyMsg = await getData(mode, tdxtoken);
+        if(replyMsg == "invalid token"){
+            tdxtoken = await GetAuthorizationHeader();
+            let replyMsg = await getData(mode, tdxtoken);
+            bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+        }
+        else{
+            bot.sendMessage(msg.chat.id, replyMsg, {parse_mode: 'HTML'});
+        }
+        
     }
-    else if( !(msg.text == "/server" && msg.text == "/start") ){
-        bot.sendMessage(process.env.adminID, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
-    }
+    bot.sendMessage(`${msg.chat.id}`, `${msg.chat.last_name}${msg.chat.first_name}(${msg.chat.username})\n--\n${msg.text}`);
 });
 const app = express();
 app.get('/', async function (req, res) {
     res.redirect("https://t.me/NCCU_bot");
 });
-app.listen(process.env.PORT || 5000, async function () {
+app.listen(5000, async function () {
+    tdxtoken = await GetAuthorizationHeader();
     console.log(`-- ${serverStartTime} Server is running...`);
     for(var i=0;i<Object.keys(data).length;i++)
-        await getData(Object.keys(data)[i]);
+        await getData(Object.keys(data)[i], tdxtoken);
 });
