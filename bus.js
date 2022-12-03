@@ -10,9 +10,9 @@ const telegramBot = require('node-telegram-bot-api');
 const clock = ["🕛", "🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚"];
 // fill in your telegram token
 const secret = require("./secret.json");
-const client_id = secret.client_id;
-const client_secret = secret.client_secret;
-const tgtoken = secret.tgtoken;
+const client_id = secret.client_id || process.env.client_id;
+const client_secret = secret.client_secret || process.env.client_secret;
+const tgtoken = secret.tgtoken || process.env.tgtoken;
 const bot = new telegramBot(tgtoken, {polling: true});
 
 var tdxtoken = "";
